@@ -1,0 +1,48 @@
+{
+  "name": "open_bilrost_cli",
+  "version": "1.0.18",
+  "description": "Bilrost command line tools",
+  "main": "bilrost_cli.js",
+  "engines": {
+    "node": ">8.9.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fl4re/open_bilrost_cli"
+  },
+  "bin": {
+    "bilrost": "./bin/bilrost",
+    "bilrost-deploy": "./bin/bilrost_deploy"
+  },
+  "author": "maxime-helen-sb",
+  "license": "MIT",
+  "dependencies": {
+    "open_bilrost": "git+https://github.com/fl4re/open_bilrost.git",
+    "chalk": "^1.1.3",
+    "commander": "^2.15.1",
+    "detect-port": "^1.2.2",
+    "file-uri-to-path": "^1.0.0",
+    "file-url": "^2.0.2",
+    "fs-extra": "^4.0.2",
+    "inquirer": "^6.0.0",
+    "open": "0.0.5",
+    "pretty-error": "^2.1.1",
+    "pretty-ms": "^3.0.1",
+    "prettyjson": "^1.2.1",
+    "recursive-readdir": "^2.2.2",
+    "request": "^2.81.0",
+    "walk-back": "^3.0.0",
+    "winston": "^2.2.0"
+  },
+  "devDependencies": {
+    "jshint": "^2.9.4",
+    "mocha": "^3.4.2",
+    "should": "^11.2.1",
+    "sinon": "^2.3.2",
+    "find-process": "^1.1.0"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --recursive --grep DO_NOT_RUN --invert",
+    "jshint": "./node_modules/.bin/jshint . --exclude node_modules"
+  }
+}

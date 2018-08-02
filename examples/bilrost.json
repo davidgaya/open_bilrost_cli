@@ -1,0 +1,49 @@
+
+{
+     "origins": [
+        {
+            "workspace": "./open_bilrost_test_project",
+            "deploys": [
+                {
+                    "ref": "/assets/test_1_1_0.level",
+                    "dest": "./example_project/Assets/" 
+                },
+                {
+                    "ref": "/assets/prefab/mall.prefab",
+                    "dest": "./example_project/Assets/" 
+                },
+                {
+                    "ref": "/assets/prefab/test_1_1_0.prefab",
+                    "dest": "./example_project/Assets/" 
+                },
+                {
+                    "ref": "/assets/levels/test_001.level",
+                    "dest": "./example_project/Assets/" 
+                }
+            ]
+        },
+        {
+            "organization": "fl4re",
+            "project_name": "open_bilrost_test_project",
+            "branch": "production_repo",
+            "deploys": [
+                {
+                    "ref": "/assets/test_1_1_0.level",
+                    "dest": "./example_project/Assets/" 
+                },
+                {
+                    "ref": "/assets/prefab/mall.prefab",
+                    "dest": "./example_project/Assets/" 
+                },
+                {
+                    "ref": "/assets/prefab/test_1_1_0.prefab",
+                    "dest": "./example_project/Assets/" 
+                },
+                {
+                    "ref": "/assets/levels/test_001.level",
+                    "dest": "./example_project/Assets/" 
+                }
+            ]
+        }
+    ]
+}

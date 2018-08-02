@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+
+/**
+* Copyright (C) 2015-2018 Starbreeze AB All Rights Reserved.
+*/
+
+'use strict';
+
+require('../cli');
