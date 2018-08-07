@@ -10,7 +10,7 @@ const program = require('commander');
 const path = require('path').posix;
 const os = require('os');
 
-const deploy_actions = require('./controller/custom/deploy_assets');
+const deploy_actions = require('./controller/custom/deploy_asset');
 const repair_cache = require('./controller/custom/repair_cache');
 const log = require('./util/log');
 const bilrost_starter = require('./util/bilrost_starter');

@@ -14,8 +14,8 @@ const workspace_utilities = require('open_bilrost/assetmanager/workspace_utiliti
 const vcs = require('../vcs');
 const am = require('../am');
 
-const am_config = require('../config/am.json');
-const am_model = require('../model/am')(am_config);
+const am_config = require('../../config/am.json');
+const am_model = require('../../model/am')(am_config);
 
 const log = require('../../util/log');
 const ifs = require('../../util/ifs');
@@ -85,7 +85,7 @@ const pass_enoent_error = err => {
     }
 };
 
-const clean_installed_assets = (deploy_file_name, cwd, deploy_tmp_directory) => {
+/*const clean_installed_assets = (deploy_file_name, cwd, deploy_tmp_directory) => {
     return ifs.readJson(Path.join(cwd, deploy_file_name))
         .then(def => map_definition_to_create_origin_inputs(def, deploy_tmp_directory, cwd)
             .reduce((origin_sequence, origin) => origin_sequence
@@ -94,7 +94,7 @@ const clean_installed_assets = (deploy_file_name, cwd, deploy_tmp_directory) => 
         .then(() => {
             console.info(chalk.green('Cleaning done'));
         });
-};
+};*/
 
 const install_assets = (deploy_file_name, cwd, deploy_tmp_directory, is_copy) => {
     let sub_id = '';
@@ -152,6 +152,6 @@ const install_assets = (deploy_file_name, cwd, deploy_tmp_directory, is_copy) =>
 };
 
 module.exports = {
-    install_assets,
-    clean_installed_assets
+    install_assets/*,
+    clean_installed_assets*/
 };
