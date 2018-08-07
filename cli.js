@@ -16,7 +16,7 @@ const logger = require('./util/log');
 const am_actions = require('./controller/am');
 const cb_actions = require('./controller/cb');
 const vcs_actions = require('./controller/vcs');
-const custom_actions = require('./controller/custom');
+const commit_folder_asset_action = require('./controller/custom/commit_folder_asset');
 const workspace_finder = require('./util/workspace_finder');
 const auth_actions = require('./controller/auth');
 const pack = require('./package.json');
@@ -60,13 +60,11 @@ function help() {
 }
 
 const find_workspace_url = () => {
-    const url = workspace_finder(program.pwd);
-    if (url) {
-        return url;
-    } else {
-        const message = 'Workspace not found!';
-        logger.spawn_error(message);
-        throw "";
+    try {
+        return workspace_finder(program.pwd);
+    } catch(err) {
+        logger.spawn_error(err.toString());
+        throw err;
     }
 };
 
@@ -409,7 +407,7 @@ program
     .option('-i, --identifier <identifier>', 'workspace identifier')
     .action(start_bilrost_if_not_running((reference, directory_relative_path, options) => {
         const identifier = options.identifier || find_workspace_url();
-        return custom_actions.commit_folder_asset(identifier, reference, directory_relative_path);
+        return commit_folder_asset_action(identifier, reference, directory_relative_path);
     }))
     .on('--help', () => {
         console.log();
