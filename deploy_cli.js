@@ -10,7 +10,8 @@ const program = require('commander');
 const path = require('path').posix;
 const os = require('os');
 
-const custom_actions = require('./controller/custom');
+const deploy_actions = require('./controller/custom/deploy_asset');
+const repair_cache = require('./controller/custom/repair_cache');
 const log = require('./util/log');
 const bilrost_starter = require('./util/bilrost_starter');
 
@@ -36,7 +37,7 @@ program
     .description('Install asset')
     .option('-c, --copy', 'copy content')
     .action(options => {
-        bilrost_starter.start_if_not_running(9224, () => custom_actions.install_assets('bilrost.json', process.cwd().replace(/\\/g, '/'), deploy_path, options.copy), program.bilrostOutput)
+        bilrost_starter.start_if_not_running(9224, () => deploy_actions.install_assets('bilrost.json', process.cwd().replace(/\\/g, '/'), deploy_path, options.copy), program.bilrostOutput)
             .catch(err => {
                 log.spawn_error(err);
                 process.exit();
@@ -50,7 +51,7 @@ program
     .description('Repair cache')
     .option('-p, --path', 'Cache path since this is customizable in bilrost configurations')
     .action(options => {
-        bilrost_starter.start_if_not_running(9224, () => custom_actions.repair_cache(options.path ? options.path : cache_path), program.bilrostOutput)
+        bilrost_starter.start_if_not_running(9224, () => repair_cache(options.path ? options.path : cache_path), program.bilrostOutput)
             .catch(err => {
                 log.spawn_error(err);
                 process.exit();
@@ -61,7 +62,7 @@ program
     .command('clean')
     .description('Clean previously installed assets')
     .action(options => {
-        bilrost_starter.start_if_not_running(9224, () => custom_actions.clean_installed_assets('bilrost.json', process.cwd().replace(/\\/g, '/'), deploy_path), program.bilrostOutput)
+        bilrost_starter.start_if_not_running(9224, () => deploy_actions.clean_installed_assets('bilrost.json', process.cwd().replace(/\\/g, '/'), deploy_path), program.bilrostOutput)
             .catch(err => {
                 log.spawn_error(err);
                 process.exit();
