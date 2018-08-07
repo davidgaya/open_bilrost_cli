@@ -35,14 +35,14 @@
     "winston": "^2.2.0"
   },
   "devDependencies": {
+    "find-process": "^1.1.0",
     "jshint": "^2.9.4",
-    "mocha": "^3.4.2",
+    "mocha": "^5.2.0",
     "should": "^11.2.1",
-    "sinon": "^2.3.2",
-    "find-process": "^1.1.0"
+    "sinon": "^2.3.2"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --recursive --grep DO_NOT_RUN --invert",
-    "jshint": "./node_modules/.bin/jshint . --exclude node_modules"
+    "test": "./node_modules/.bin/mocha --recursive --grep DO_NOT_RUN --invert --exit",
+    "jshint": "./node_modules/.bin/jshint . --exit --exclude node_modules"
   }
 }
