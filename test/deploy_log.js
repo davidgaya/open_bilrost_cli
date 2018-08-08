@@ -10,8 +10,8 @@ const fs = require('fs-extra');
 
 const deploy_log = require('../controller/custom/deploy_log');
 
-const base_path = 'tmp/.bilrost';
-const deploy_log_path = Path.join(base_path, deploy_log.FILE_NAME);
+const base_path = 'tmp';
+const deploy_log_path = Path.join(base_path, deploy_log.FOLDER_NAME, deploy_log.FILE_NAME);
 
 const log = deploy_log.format();
 log.resources = [
@@ -28,7 +28,7 @@ describe('deploy log', function () {
     before(function (done) {
         deploy_log.create(base_path, log)
             .then(() => {
-                should.equal(fs.readFileSync(deploy_log_path).toString(), JSON.stringify(log) + '\n');
+                should.equal(fs.readFileSync(deploy_log_path).toString(), deploy_log.stringify(log));
                 done();
             })
             .catch(done);
@@ -93,11 +93,11 @@ describe('deploy log', function () {
                 path: 'foo/bar'
             }
         ];
-        log.resources.concat(resources_to_push);
-        deploy_log.update('tmp')
-            .then(deploy_log => {
-                should.deepEqual(deploy_log.resources, log.resources);
-                should.equal(fs.readFileSync(deploy_log_path).toString(), JSON.stringify(log) + '\n');
+        log.resources = log.resources.concat(resources_to_push);
+        deploy_log.update('tmp', resources_to_push)
+            .then(res_log => {
+                should.deepEqual(res_log.resources, log.resources);
+                should.equal(fs.readFileSync(deploy_log_path).toString(), deploy_log.stringify(log));
                 done();
             })
             .catch(done);

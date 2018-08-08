@@ -54,7 +54,7 @@ describe('Am model', function () {
         am.forget_workspace_in_favorite('test')
             .then(output => {
                 should.deepEqual({
-                    message: 'Successfully forgot'
+                    message: 'Successfully forgotten'
                 }, output);
                 stub.restore_request('delete');
                 done();
