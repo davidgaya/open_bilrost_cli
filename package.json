@@ -43,6 +43,6 @@
   },
   "scripts": {
     "test": "./node_modules/.bin/mocha --recursive --grep DO_NOT_RUN --invert --exit",
-    "jshint": "./node_modules/.bin/jshint . --exit --exclude node_modules"
+    "jshint": "./node_modules/.bin/jshint . --exclude node_modules"
   }
 }
