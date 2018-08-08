@@ -12,10 +12,9 @@ call git submodule add --force -b production_repo git@github.com:fl4re/open_bilr
 echo "Dave deploys assets from workspace with 'copy' option"
 call bilrost-deploy install --copy -B
 
-echo "Dave removes deployed files"
+echo "Dave cleans deployed files"
+call bilrost-deploy clean
 
-rm -rf example_workspace
-rm -rf example_project
 echo %WORKSPACE_FILE_URI%
 call bilrost delete-workspace %WORKSPACE_FILE_URI%
 

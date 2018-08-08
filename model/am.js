@@ -33,7 +33,7 @@ module.exports = config => {
         '/assetmanager/workspaces/' + encodeURIComponent(identifier) + '/favorites'
     ).then(body => {
         if (body === 'Ok') {
-            return { message: 'Successfully forgot' };
+            return { message: 'Successfully forgotten' };
         } else {
             throw {
                 message: 'Unexpected body answer',
@@ -47,7 +47,7 @@ module.exports = config => {
         '/assetmanager/workspaces/favorites/reset'
     ).then(body => {
         if (body === 'Ok') {
-            return { message: 'Successfully forgot' };
+            return { message: 'Successfully forgotten' };
         } else {
             throw {
                 message: 'Unexpected body answer',

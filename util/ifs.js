@@ -30,18 +30,16 @@ const createReadStream = path => fs.createReadStream(path);
 
 const outputJson = (path, content) => promisify(fs.outputJson)(path, content);
 
+const outputFile = (path, content) => promisify(fs.outputFile)(path, content);
+
 const is_directory_sync = path => {
     const stats = fs.lstatSync(path);
     return stats.isDirectory();
 };
 
-const copyContent = (resources, origin, target, base, ignore) => resources.reduce((copy_sequence, file) => copy_sequence
-    .then(() => promisify(fs.copy)(file, path.join(target, path.relative(path.join(origin, base ? base : ""), file)))),
-Promise.resolve());
+const copy = (origin, dest) => promisify(fs.copy)(origin, dest);
 
-const createLink = (resources, origin, target, base, ignore) => resources.reduce((copy_sequence, file) => copy_sequence
-    .then(() => promisify(fs.ensureSymlink)(file, path.join(target, path.relative(path.join(origin, base ? base : ""), file)))),
-Promise.resolve());
+const link = (origin, dest) => promisify(fs.ensureSymlink)(origin, dest);
 
 module.exports = {
     get_files_recursively,
@@ -51,8 +49,9 @@ module.exports = {
     readJson,
     mkdirs,
     remove,
-    copyContent,
+    copy,
     outputJson,
+    outputFile,
     is_directory_sync,
-    createLink
+    link
 };

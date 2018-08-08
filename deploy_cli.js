@@ -37,10 +37,22 @@ program
     .description('Install asset')
     .option('-c, --copy', 'copy content')
     .action(options => {
-        bilrost_starter.start_if_not_running(9224, () => deploy_actions.install_assets('bilrost.json', process.cwd().replace(/\\/g, '/'), deploy_path, options.copy), program.bilrostOutput)
+        bilrost_starter.start_if_not_running(9224, () => deploy_actions.install('bilrost.json', process.cwd(), deploy_path, options.copy), program.bilrostOutput)
             .catch(err => {
                 log.spawn_error(err);
                 process.exit();
+            });
+    });
+
+program
+    .command('clean')
+    .description('Clean previously installed assets')
+    .action(options => {
+        bilrost_starter.start_if_not_running(9224, () => deploy_actions.clean(process.cwd()), program.bilrostOutput)
+            .catch(err => {
+                log.spawn_error(err);
+                process.exit();
+
             });
     });
 
@@ -55,18 +67,6 @@ program
             .catch(err => {
                 log.spawn_error(err);
                 process.exit();
-            });
-    });
-
-program
-    .command('clean')
-    .description('Clean previously installed assets')
-    .action(options => {
-        bilrost_starter.start_if_not_running(9224, () => deploy_actions.clean_installed_assets('bilrost.json', process.cwd().replace(/\\/g, '/'), deploy_path), program.bilrostOutput)
-            .catch(err => {
-                log.spawn_error(err);
-                process.exit();
-
             });
     });
 
