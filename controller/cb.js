@@ -7,8 +7,16 @@
 const config = require('../config/am.json');
 const cb_model = require('../model/cb')(config);
 const log = require('../util/log');
- 
-const list_workspace = name => cb_model.list_workspace(name)
+
+const list_workspace = (name, verbose) => cb_model.list_workspace(name)
+    .then(response => {
+        if (!verbose) {
+            response.body = {
+                workspaces: response.body.items.map(({ name, project, created_at, file_uri }) => ({ name, project: project.full_name, file_uri, created_at: new Date(created_at).toString() }))
+            };
+        }
+        return response;
+    })
     .then(log.spawn_success)
     .catch(log.spawn_error);
 

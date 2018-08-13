@@ -76,9 +76,9 @@ module.exports = config => {
         }
     });
 
-   const reset_workspace = identifier => req(
+   const reset_workspace = file_uri => req(
         'post',
-        '/assetmanager/workspaces/' + encodeURIComponent(identifier) + '/reset'
+        '/assetmanager/workspaces/' + encodeURIComponent(file_uri) + '/reset'
     ).then(body => {
         if (body === 'Ok') {
             return { message: 'Successfully reset' };
