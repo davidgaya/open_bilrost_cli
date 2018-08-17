@@ -117,7 +117,8 @@ program
     .command('list-workspaces')
     .description('List workspaces available in the favorite list')
     .option('-i, --identifier <identifier>', 'workspace identifier')
-    .action(start_bilrost_if_not_running(options => cb_actions.list_workspace(options.identifier)));
+    .option('-v, --verbose', 'verbose to display asset content')
+    .action(start_bilrost_if_not_running(options => cb_actions.list_workspace(options.identifier, options.verbose)));
 
 program
     .command('add-workspace <absolute_path>')
@@ -174,13 +175,13 @@ program
     });
 
 program
-    .command('reset-workspace <identifier>')
+    .command('reset-workspace [workspace_relative_path]')
     .description('Reset a workpsace')
-    .option('-f, --force', 'force branch change without prompt')
-    .action(start_bilrost_if_not_running((identifier, options) => options.force ? am_actions.reset_workspace(identifier) : _prompt(are_you_sure)
+    .option('-f, --force', 'force reset without prompt')
+    .action(start_bilrost_if_not_running((workspace_relative_path, options) => options.force ? am_actions.reset_workspace(Path.join(program.pwd, workspace_relative_path)) : _prompt(are_you_sure)
         .then(answer => {
                 if (answer.are_you_sure === 'y') {
-                    return am_actions.reset_workspace(identifier);
+                    return am_actions.reset_workspace(Path.join(program.pwd, workspace_relative_path ? workspace_relative_path : ''));
                 }
         })
     ))
