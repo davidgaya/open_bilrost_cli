@@ -16,7 +16,7 @@ const workspace_utilities = require('open_bilrost/assetmanager/workspace_utiliti
 
 const TMP_ASSET_DEFINITION = "tmp_directory_asset.json";
 
-module.exports = (identifier, asset_name, directory_relative_path) => cb.list_workspace(identifier)
+module.exports = (identifier, asset_name, directory_relative_path) => cb.list_workspace(identifier, true)
     .then(output => {
         const items = output.body.items;
         if (!items.length) {

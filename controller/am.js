@@ -38,7 +38,7 @@ const create_workspace = input => {
         .catch(log.spawn_error);
 };
 
-const reset_workspace = (path  = './') => am_models.reset_workspace(file_uri(path))
+const reset_workspace = path => am_models.reset_workspace(file_uri(path))
     .then(log.spawn_success)
     .catch(log.spawn_error);
 
@@ -83,7 +83,7 @@ const delete_asset = (identifier, reference) => am_models.delete_asset(identifie
     .then(log.spawn_success)
     .catch(log.spawn_error);
 
-const update_asset = (identifier, asset_ref, options) => cb.list_workspace(identifier)
+const update_asset = (identifier, asset_ref, options) => cb.list_workspace(identifier, true)
     .then(res => {
         let workspace_path;
         try {

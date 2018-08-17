@@ -181,7 +181,7 @@ program
     .action(start_bilrost_if_not_running((workspace_relative_path, options) => options.force ? am_actions.reset_workspace(Path.join(program.pwd, workspace_relative_path)) : _prompt(are_you_sure)
         .then(answer => {
                 if (answer.are_you_sure === 'y') {
-                    return am_actions.reset_workspace(Path.join(program.pwd, workspace_relative_path));
+                    return am_actions.reset_workspace(Path.join(program.pwd, workspace_relative_path ? workspace_relative_path : ''));
                 }
         })
     ))
