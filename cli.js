@@ -16,6 +16,7 @@ const logger = require('./util/log');
 const am_actions = require('./controller/am');
 const cb_actions = require('./controller/cb');
 const vcs_actions = require('./controller/vcs');
+const config_actions = require('./controller/config');
 const commit_folder_asset_action = require('./controller/custom/commit_folder_asset');
 const workspace_finder = require('./util/workspace_finder');
 const auth_actions = require('./controller/auth');
@@ -90,7 +91,7 @@ program
         console.log();
 
         console.log('  Prompt signin webpage from favorite web browser if not connected from github. You have 1 minute to login');
-        console.log('  Prompt greeting webpage if not connected with bilrost backend');
+        console.log('  Or prompt greeting webpage if not connected with bilrost backend');
     })
     .action(start_bilrost_if_not_running(() => auth_actions.login()));
 
@@ -495,6 +496,29 @@ program
         const identifier = options.identifier || find_workspace_url();
         return am_actions.remove_branch(identifier, branch_name);
     }));
+
+program.command(' -- ');
+
+program
+    .command('get-config <name>')
+    .description('Get configuration value')
+    .action(start_bilrost_if_not_running(config_actions.get));
+
+
+program
+    .command('get-configs')
+    .description('Get all configuration values')
+    .action(start_bilrost_if_not_running(config_actions.get_all));
+
+program
+    .command('set-config <name> <value>')
+    .description('Set a new configuration value')
+    .action(start_bilrost_if_not_running(config_actions.set));
+
+program
+    .command('del-config <name>')
+    .description('Reset a configuration value')
+    .action(start_bilrost_if_not_running(config_actions.del));
 
 program.command(' -- ');
 
