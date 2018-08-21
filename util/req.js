@@ -20,7 +20,7 @@ module.exports = base_url => (method, url, options) => new Promise((resolve, rej
             reject({
                 statusCode: res.statusCode,
                 message: err || res.statusCode + ' unexpected status code.',
-                body: body
+                body
             });
         } else {
             resolve(body);
