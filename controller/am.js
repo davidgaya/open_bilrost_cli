@@ -38,9 +38,14 @@ const create_workspace = input => {
         .catch(log.spawn_error);
 };
 
-const reset_workspace = path => am_models.reset_workspace(file_uri(path))
+const reset_workspace = (path, silent) => am_models.reset_workspace(file_uri(path))
     .then(log.spawn_success)
-    .catch(log.spawn_error);
+    .catch(err => {
+        const is_filtered_error = silent && err.statusCode === 400;
+        if (!is_filtered_error) {
+            log.spawn_error(err);
+        }
+    });
 
 const populate_workspace = input => {
     input.file_uri = input.path ? file_uri(input.path) : input.file_uri;

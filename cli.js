@@ -179,13 +179,20 @@ program
     .command('reset-workspace [workspace_relative_path]')
     .description('Reset a workpsace')
     .option('-f, --force', 'force reset without prompt')
-    .action(start_bilrost_if_not_running((workspace_relative_path, options) => options.force ? am_actions.reset_workspace(Path.join(program.pwd, workspace_relative_path ? workspace_relative_path : '')) : _prompt(are_you_sure)
-        .then(answer => {
-                if (answer.are_you_sure === 'y') {
-                    return am_actions.reset_workspace(Path.join(program.pwd, workspace_relative_path ? workspace_relative_path : ''));
-                }
-        })
-    ))
+    .option('-s, --silent', 'silent error output if workspace not found or invalid')
+    .action(start_bilrost_if_not_running((workspace_relative_path, options) => {
+        const workspace_absolute_path = Path.join(program.pwd, workspace_relative_path ? workspace_relative_path : '');
+        if (options.force) {
+            return am_actions.reset_workspace(workspace_absolute_path, options.silent);
+        } else {
+            return _prompt(are_you_sure)
+                .then(answer => {
+                    if (answer.are_you_sure === 'y') {
+                        return am_actions.reset_workspace(workspace_absolute_path, options.silent);
+                    }
+                });
+        }
+    }))
     .on('--help', () => {
         console.log();
         console.log('  WARNING');
