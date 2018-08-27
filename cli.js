@@ -122,9 +122,12 @@ program
     .action(start_bilrost_if_not_running(options => cb_actions.list_workspace(options.identifier, options.verbose)));
 
 program
-    .command('add-workspace <absolute_path>')
+    .command('add-workspace [relative_path]')
     .description('Add workspace to the favorite list')
-    .action(start_bilrost_if_not_running(am_actions.add_workspace_to_favorite));
+    .action(start_bilrost_if_not_running(workspace_relative_path => {
+        const workspace_absolute_path = Path.join(program.pwd, workspace_relative_path ? workspace_relative_path : '');
+        am_actions.add_workspace_to_favorite(workspace_absolute_path);
+    }));
 
 program
     .command('forget-workspace <identifier>')
