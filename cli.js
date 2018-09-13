@@ -138,7 +138,7 @@ program
         console.log('  Additional information:');
         console.log();
 
-        console.log('  Given identifier can be a workspace name, file uri or guid');
+        console.log('  Given identifier can be a workspace name or file uri');
         console.log('  Run "bilrost list-workspaces" to get these identifiers');
     });
 
@@ -210,7 +210,7 @@ program
         console.log();
         console.log('  Additional information:');
         console.log();
-        console.log('  Given identifier can be a workspace name, file uri or guid');
+        console.log('  Given identifier can be a workspace name or file uri');
         console.log('  Run "bilrost list-workspaces" to get these identifiers');
     });
 
