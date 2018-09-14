@@ -1,6 +1,6 @@
 # Asset manager
 
-Bilrost comes with a command line to interact with the version control features. Use `bilrost --help` prefix to get command lists. `bilrost [command_name] --help` gives details about specific command execution.
+Bilrost comes with a command line to interact with the version control system features. Use `bilrost --help` prefix to get command lists. `bilrost [command_name] --help` gives details about specific command execution.
 
 ## Commands
 ```
