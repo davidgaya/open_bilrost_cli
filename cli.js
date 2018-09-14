@@ -148,16 +148,16 @@ program
     .action(start_bilrost_if_not_running(am_actions.forget_workspaces_in_favorite));
 
 program
-    .command('create-workspace <name> <absolute_path>')
+    .command('create-workspace <name> <relative_path>')
     .description('Create a workspace')
     .option('-o, --organization <organization>', 'organization name')
     .option('-p, --project-name <project_name>', 'project name')
     .option('-d, --description <description>', 'description')
     .option('-b, --branch <branch>', 'branch')
-    .action(start_bilrost_if_not_running((wrk_name, wrk_path, options) => {
+    .action(start_bilrost_if_not_running((workspace_name, workspace_relative_path, options) => {
         const input = {
-            path: wrk_path,
-            name: wrk_name,
+            path: Path.join(program.pwd, workspace_relative_path ? workspace_relative_path : ''),
+            name: workspace_name,
             organization: options.organization,
             project_name: options.projectName,
             description: options.description,
