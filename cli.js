@@ -346,18 +346,26 @@ program
     });
 
 program
-    .command('unsubscribe <sub_id>')
-    .description('Unsubscribe specific subscription from given id')
+    .command('unsubscribe <descriptor>')
+    .description('Unsubscribe specific subscription from given descriptor')
     .option('-i, --identifier <identifier>', 'workspace identifier')
-    .action(start_bilrost_if_not_running((subscription_id, options) => {
+    .action(start_bilrost_if_not_running((descriptor, options) => {
         const identifier = options.identifier || find_workspace_url();
-        return vcs_actions.unsubscribe(identifier, subscription_id);
+        return vcs_actions.get_subscription_list(identifier)
+            .then(list => {
+                const subscription_id = list.find(sub => sub.descriptor === descriptor).id;
+                if (subscription_id) {
+                    return vcs_actions.unsubscribe(identifier, subscription_id);
+                } else {
+                    throw `Subscription id related to ${descriptor} is not found`;
+                }
+            });
     }))
     .on('--help', () => {
         console.log();
         console.log('  Additional information:');
         console.log();
-        console.log('  Run "bilrost list-subscriptions" to find out id value');
+        console.log('  Run "bilrost list-subscriptions" to list all available subs');
         console.log();
     });
 
