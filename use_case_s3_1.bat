@@ -71,3 +71,5 @@ cd %DIR_PATH%
 
 echo "Alice removes the workspace"
 call bilrost delete-workspace use_case_s3_1_workspace -B
+
+DEL use_case_s3_1_workspace /S/Q >nul 2>&1
