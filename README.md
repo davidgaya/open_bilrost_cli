@@ -45,7 +45,7 @@ Bilrost comes with a command line tool to interact with the version control syst
 
 1/ Create workspace.
 
-A workspace is the local representation of a project. This is where assets get updated.
+A workspace is the local representation of a project. This is where assets are updated.
 
 `bilrost create-workspace test-workspace relative/path/to/folder --organization org_name --project-name test --branch master --description "test workspace"`
 
@@ -57,19 +57,25 @@ Branches allows work isolation. Every update must happen within a new branch in 
 
 3/ Subscribe
 
-Subscription tells to bilrost which assets to be worked with. This makes sure that asset is synchronized with the remote version.
+Subscription pulls given asset content to workspace.
 
 `bilrost subscribe ASSET /assets/test_asset`
 
 4/ Update an asset.
 
+Define new asset properties.
+
 `bilrost update-asset /assets/test_asset --add /resources/test_asset/tools --delete /resources/test_asset/detail`
 
 5/ Stage the modification
 
+Adds the subscribed asset to the stage list. 
+
 `bilrost stage /assets/test_asset`
 
 6/ Commit
+
+Pushes the staged assets to remote server.
 
 `bilrost commit "Updated /assets/test_asset"`
 
