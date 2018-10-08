@@ -80,7 +80,7 @@ const list_asset = (identifier, reference, verbose) => am_model.list_asset(ident
     .then(log.spawn_success)
     .catch(log.spawn_error);
 
-const rename_asset = (identifier, ref, new_ref) => am_model.rename_asset(identifier)
+const rename_asset = (identifier, ref, new_ref) => am_model.rename_asset(identifier, ref, new_ref)
     .then(log.spawn_success)
     .catch(log.spawn_error);
 
