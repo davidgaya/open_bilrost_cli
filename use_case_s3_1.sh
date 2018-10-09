@@ -36,7 +36,7 @@ echo "Alice references the new resource as main dependency to her asset"
 bilrost update-asset /assets/test.level -m /resources/alice_resource.txt -B
 
 echo "Alice subscribes to this asset"
-bilrost subscribe ASSET /assets/test.level -B
+bilrost subscribe /assets/test.level -B
 
 echo "Alice stages this asset"
 bilrost stage /assets/test.level -B

@@ -46,7 +46,7 @@ echo "Alice checks the comment has been well edited"
 call bilrost list-assets /assets/test.level -B
 
 echo "Alice subscribes to this asset"
-call bilrost subscribe ASSET /assets/test.level -B
+call bilrost subscribe /assets/test.level -B
 
 echo "Alice stages this asset"
 call bilrost stage /assets/test.level -B

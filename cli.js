@@ -324,25 +324,22 @@ program
     }));
 
 program
-    .command('subscribe <type> <descriptor>')
-    .description('Subscribe to an asset, namespace or search')
+    .command('subscribe <descriptor>')
+    .description('Subscribe to an asset')
     .option('-i, --identifier <identifier>', 'workspace identifier')
-    .action(start_bilrost_if_not_running((type, descriptor, options) => {
+    .action(start_bilrost_if_not_running((descriptor, options) => {
         const identifier = options.identifier || find_workspace_url();
+        const type = 'ASSET';
         return vcs_actions.subscribe(identifier, type, descriptor);
     }))
     .on('--help', () => {
         console.log();
-        console.log('  Additional information:');
+        console.log('  Example:');
         console.log();
-        console.log('  <type> argument can be either ASSET, NAMESPACE or SEARCH');
-        console.log();
-        console.log('  Examples:');
-        console.log();
-        console.log('  bilrost subscribe ASSET /assets/foo');
-        console.log('  bilrost subscribe NAMESPACE /assets/namespace/');
+        console.log('  bilrost subscribe /assets/foo');
+/*        console.log('  bilrost subscribe NAMESPACE /assets/namespace/');
         console.log('  bilrost subscribe SEARCH cats main:/assets/red_cat');
-        console.log('  Latter example searches for assets that contains "cat" in their name and define "/assets/red_cat" as main dependency');
+        console.log('  Latter example searches for assets that contains "cat" in their name and define "/assets/red_cat" as main dependency');*/
     });
 
 program
