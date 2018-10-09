@@ -23,7 +23,7 @@ Bilrost comes with a command line tool to interact with the version control syst
     deploy-asset [options] <definition_relative_path>      Deploy assets
 
     subscriptions [options]                                Print subscription list
-    subscribe [options] <type> <descriptor>                Subscribe to an asset, namespace or search
+    subscribe [options] <descriptor>                Subscribe to an asset
     unsubscribe [options] <subscription_id>                Unsubscribe specific subscription
 
     stage-list [options]                                   Print stage list
@@ -59,7 +59,7 @@ Branches allows work isolation. Every update must happen within a new branch in 
 
 Subscription pulls given asset content to workspace.
 
-`bilrost subscribe ASSET /assets/test_asset`
+`bilrost subscribe /assets/test_asset`
 
 4/ Update an asset.
 
