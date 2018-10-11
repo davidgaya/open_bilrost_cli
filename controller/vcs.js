@@ -35,13 +35,21 @@ const get_status = (identifier, reference) => vcs.get_status(identifier, referen
 const unstage = (identifier, reference) => vcs.unstage(identifier, reference)
     .then(log.spawn_success).catch(log.spawn_error);
 
+const reset_stage_list = identifier => vcs.reset_stage_list(identifier)
+    .then(log.spawn_success).catch(log.spawn_error);
+
+const reset_subscription_list = identifier => vcs.reset_subscription_list(identifier)
+    .then(log.spawn_success).catch(log.spawn_error);
+
 module.exports = {
-    subscribe: subscribe,
-    unsubscribe: unsubscribe,
-    stage: stage,
-    commit: commit,
-    get_subscription_list: get_subscription_list,
-    get_status: get_status,
-    get_stage_list: get_stage_list,
-    unstage: unstage
+    subscribe,
+    unsubscribe,
+    stage,
+    commit,
+    get_subscription_list,
+    get_status,
+    get_stage_list,
+    unstage: unstage,
+    reset_stage_list,
+    reset_subscription_list
 };

@@ -70,6 +70,22 @@ module.exports = config => {
         }
     });
 
+    const reset_stage_list = identifier => req(
+        'delete',
+        '/assetmanager/workspaces/' + encodeURIComponent(identifier) + '/stage'
+    ).then(body => {
+        if (body === 'Ok') {
+            return {
+                message: 'successfully reset'
+            };
+        } else {
+            throw { 
+                message: 'Undefined body answer',
+                body: body
+            };
+        }
+    });
+
     const commit = (identifier, comment) => req(
         'post',
         '/assetmanager/workspaces/' + encodeURIComponent(identifier) + '/commits',
@@ -146,15 +162,33 @@ module.exports = config => {
         }
     });
 
+    const reset_subscription_list = identifier => req(
+        'delete',
+        '/assetmanager/workspaces/' + encodeURIComponent(identifier) + '/subscriptions'
+    ).then(body => {
+        if (body === 'Ok') {
+            return {
+                message: 'Successfully reset'
+            };
+        } else {
+            throw { 
+                message: 'Undefined body answer',
+                body: body
+            };
+        }
+    });
+
     return {
-        get_status: get_status,
-        get_stage_list: get_stage_list,
-        stage: stage,
-        unstage: unstage,
-        commit: commit,
-        get_commit_log: get_commit_log,
-        get_subscription_list: get_subscription_list,
-        subscribe: subscribe,
-        unsubscribe: unsubscribe
+        get_status,
+        get_stage_list,
+        stage,
+        unstage,
+        reset_stage_list,
+        commit,
+        get_commit_log,
+        get_subscription_list,
+        reset_subscription_list,
+        subscribe,
+        unsubscribe
     };
 };

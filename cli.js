@@ -366,6 +366,15 @@ program
         console.log();
     });
 
+program
+    .command('reset-subscriptions')
+    .description('Reset subscription list')
+    .option('-i, --identifier <identifier>', 'workspace identifier')
+    .action(start_bilrost_if_not_running(options => {
+        const identifier = options.identifier || find_workspace_url();
+        return vcs_actions.reset_subscription_list(identifier);
+    }));
+
 program.command(' -- ');
 
 program
@@ -393,6 +402,15 @@ program
     .action(start_bilrost_if_not_running((reference, options) => {
         const identifier = options.identifier || find_workspace_url();
         return vcs_actions.unstage(identifier, reference);
+    }));
+
+program
+    .command('reset-stage')
+    .description('Reset stage list')
+    .option('-i, --identifier <identifier>', 'workspace identifier')
+    .action(start_bilrost_if_not_running(options => {
+        const identifier = options.identifier || find_workspace_url();
+        return vcs_actions.reset_stage_list(identifier);
     }));
 
 program.command(' -- ');
