@@ -15,6 +15,6 @@ bilrost-deploy install --copy -B
 echo "Dave removes deployed files"
 
 bilrost-deploy clean
-bilrost delete-workspace %WORKSPACE_FILE_URI%
+bilrost delete-workspace open_bilrost_test_project
 
 cd ..

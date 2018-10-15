@@ -60,9 +60,9 @@ function help() {
     program.help();
 }
 
-const find_workspace_url = () => {
+const find_workspace_url = (pwd = program.pwd) => {
     try {
-        return workspace_finder(program.pwd);
+        return workspace_finder(pwd);
     } catch(err) {
         logger.spawn_error(err.toString());
         throw err;
@@ -203,15 +203,23 @@ program
     });
 
 program
-    .command('delete-workspace <identifier>')
+    .command('delete-workspace <relative_path>')
     .description('Delete a workspace')
-    .action(start_bilrost_if_not_running(am_actions.delete_workspace))
+    .option('-i, --identifier <identifier>', 'workspace identifier')
+    .action(start_bilrost_if_not_running((workspace_relative_path, options) => {
+        const workspace_absolute_path = Path.join(program.pwd, workspace_relative_path ? workspace_relative_path : '');
+        const identifier = options.identifier || find_workspace_url(workspace_absolute_path);
+        return am_actions.delete_workspace(identifier);
+    }))
     .on('--help', () => {
         console.log();
         console.log('  Additional information:');
         console.log();
-        console.log('  Given identifier can be a workspace name or file uri');
+        console.log('  This is not possible to remove workspace if terminal\'s current working directory is root or child of workspace location.');
+        console.log();
+        console.log('  Given optional identifier can be a workspace name or file uri');
         console.log('  Run "bilrost list-workspaces" to get these identifiers');
+
     });
 
 program.command(' -- ');
