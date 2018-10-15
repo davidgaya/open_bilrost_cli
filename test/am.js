@@ -84,12 +84,13 @@ describe('Am model', function () {
     });
 
     it('#create_workspace -> ok', function (done) {
-        const body = { name: 'test' };
+        const file_uri = 'file:///test';
+        const body = { file_uri };
         stub.request('post', null, 200, body);
-        am.create_workspace({})
+        am.create_workspace({ file_uri })
             .then(output => {
                 should.deepEqual({
-                    message: 'test successfully created',
+                    message: `${file_uri} workspace successfully created`,
                     body: body
                 }, output);
                 stub.restore_request('post');

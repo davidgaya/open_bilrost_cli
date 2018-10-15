@@ -9,7 +9,7 @@ RESOURCE_PATH="$WORKSPACE_PATH/alice_resource.txt"
 echo $FILE_URL
 
 echo "Alice creates a workspace"
-bilrost create-workspace use_case_s3_1_workspace use_case_s3_1_workspace -o fl4re -p open_bilrost_test_project -b production_repo -d "Alice workspace" -B
+bilrost create-workspace use_case_s3_1_workspace -o fl4re -p open_bilrost_test_project -b production_repo -d "Alice workspace" -B
 
 echo "Alice goes to the new directory"
 cd $WORKSPACE_PATH

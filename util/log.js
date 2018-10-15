@@ -17,7 +17,11 @@ const output_json = data => {
 };
 
 const spawn_error = error => {
-    console.error(chalk.red(pe.render(error.body || error)));
+    if (!error.message) {
+        console.error(chalk.red(pe.render(error.body || error)));
+    } else {
+        console.error(chalk.red(error.message));
+    }
 };
 
 const spawn_warning = message => {

@@ -145,12 +145,6 @@ const install = (deploy_file_name, cwd, deploy_tmp_directory, is_copy) => {
             if (res.statusCode !== 403) {
                 throw res;
             }
-        })
-        .then(() => am_model.add_workspace_to_favorite(origin.file_uri))
-        .catch(res => {
-            if (res.statusCode !== 403) {
-                throw res;
-            }
         }) : am.create_workspace(origin);
 
     const init_deploy = () => deploy_log.access(cwd)
