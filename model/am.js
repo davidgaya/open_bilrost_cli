@@ -63,9 +63,9 @@ module.exports = config => {
             body: input
         }
     ).then(body => {
-        if (body && body.name) {
+        if (body) {
             return {
-                message: body.name + ' successfully created',
+                message: `${input.file_uri} workspace successfully created`,
                 body: body
             };
         } else {
@@ -97,9 +97,9 @@ module.exports = config => {
             body: input
         }
     ).then(body => {
-        if (body && body.name) {
+        if (body) {
             return {
-                message: body.name + ' successfully populated',
+                message: `${input.file_uri} successfully populated`,
                 body: body
             };
         } else {
