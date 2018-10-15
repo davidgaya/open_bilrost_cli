@@ -35,7 +35,6 @@ const map_definition_to_create_origin_inputs = (def, deploy_tmp_directory, cwd) 
         const description = name + " deployment workspace";
         return {
             is_workspace,
-            name,
             file_uri,
             workspace_path,
             organization,
