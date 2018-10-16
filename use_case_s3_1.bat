@@ -25,31 +25,31 @@ echo "Alice removes branch"
 call bilrost remove-branch new_branch -B
 
 echo "Alice lists the assets"
-call bilrost list-assets /assets/ -B
+call bilrost list-assets -B
 
 echo "Alice saves her first resource"
 ls > %RESOURCE_PATH%
 
 echo "Alice creates an asset"
-call bilrost create-asset /assets/test.level -B
+call bilrost create-asset test.level -B
 
 echo "Alice references the new resource as main dependency to her asset"
-call bilrost update-asset /assets/test.level -m /resources/alice_resource.txt -B
+call bilrost update-asset test.level -m /resources/alice_resource.txt -B
 
 echo "Alice retrieves the new asset created"
-call bilrost list-assets /assets/test.level -B
+call bilrost list-assets test.level -B
 
 echo "Alice edits the asset comment"
-call bilrost update-asset /assets/test.level -c "Hello" -B
+call bilrost update-asset test.level -c "Hello" -B
 
 echo "Alice checks the comment has been well edited"
-call bilrost list-assets /assets/test.level -B
+call bilrost list-assets test.level -B
 
 echo "Alice subscribes to this asset"
-call bilrost subscribe /assets/test.level -B
+call bilrost subscribe test.level -B
 
 echo "Alice stages this asset"
-call bilrost stage /assets/test.level -B
+call bilrost stage test.level -B
 
 echo "Alice commits the stage list"
 call bilrost commit "Test commit" -B
@@ -58,10 +58,10 @@ echo "Alice deletes her first resource"
 rm %RESOURCE_PATH%
 
 echo "Alice deletes the asset"
-call bilrost delete-asset /assets/test.level -B
+call bilrost delete-asset test.level -B
 
 echo "Alice stages the asset"
-call bilrost stage /assets/test.level -B
+call bilrost stage test.level -B
 
 echo "Alice commits the stage list"
 call bilrost commit "Undo test commit" -B

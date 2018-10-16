@@ -30,16 +30,16 @@ echo "Alice saves her first resource"
 ls >> $RESOURCE_PATH
 
 echo "Alice creates an asset"
-bilrost create-asset /assets/test.level -B
+bilrost create-asset test.level -B
 
 echo "Alice references the new resource as main dependency to her asset"
-bilrost update-asset /assets/test.level -m /resources/alice_resource.txt -B
+bilrost update-asset test.level -m /resources/alice_resource.txt -B
 
 echo "Alice subscribes to this asset"
-bilrost subscribe /assets/test.level -B
+bilrost subscribe test.level -B
 
 echo "Alice stages this asset"
-bilrost stage /assets/test.level -B
+bilrost stage test.level -B
 
 echo "Alice commits the stage list"
 bilrost commit "Test commit" -B
@@ -48,10 +48,10 @@ echo "Alice deletes her first resource"
 rm $RESOURCE_PATH
 
 echo "Alice deletes the asset"
-bilrost delete-asset /assets/test.level -B
+bilrost delete-asset test.level -B
 
 echo "Alice stages the asset"
-bilrost stage /assets/test.level -B
+bilrost stage test.level -B
 
 echo "Alice commits the stage list"
 bilrost commit "Undo test commit" -B

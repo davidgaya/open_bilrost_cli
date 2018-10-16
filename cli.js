@@ -69,6 +69,14 @@ const find_workspace_url = (pwd = program.pwd) => {
     }
 };
 
+const resolve_asset_ref = ref => {
+    if (ref.startsWith('/assets/')) {
+        return ref;
+    } else {
+        return `/assets/${ref}`;
+    }
+};
+
 program
     .version(pack.version)
     .option('-P, --pwd <relative>', 'Specify [relative] path of the folder to parse from this location', resolve_path, process.cwd())
@@ -230,7 +238,8 @@ program
     .option('-v, --verbose', 'verbose to display asset content')
     .action(start_bilrost_if_not_running((reference = '/assets/', options) => { // jshint ignore:line
         const identifier = options.identifier || find_workspace_url();
-        return am_actions.list_asset(identifier, reference, program.verbose);
+        const ref = resolve_asset_ref(reference);
+        return am_actions.list_asset(identifier, ref, program.verbose);
     }))
     .on('--help', () => {
         console.log();
@@ -253,7 +262,8 @@ program
     .option('-p, --definition-path <asset_definition_file_absolute_path>', 'Absolute path to the file containing the asset definition')
     .action(start_bilrost_if_not_running((reference, options) => {
         const identifier = options.identifier || find_workspace_url();
-        return am_actions.create_asset(identifier, reference, options.definitionPath);
+        const ref = resolve_asset_ref(reference);
+        return am_actions.create_asset(identifier, ref, options.definitionPath);
     }))
     .on('--help', () => {
         console.log();
@@ -275,7 +285,9 @@ program
     .option('-i, --identifier <identifier>', 'workspace identifier')
     .action(start_bilrost_if_not_running((reference, new_reference, options) => {
         const identifier = options.identifier || find_workspace_url();
-        return am_actions.rename_asset(identifier, reference, new_reference);
+        const ref = resolve_asset_ref(reference);
+        const new_ref = resolve_asset_ref(new_reference);
+        return am_actions.rename_asset(identifier, ref, new_ref);
     }))
     .on('--help', () => {
         console.log();
@@ -296,7 +308,8 @@ program
     .option('-s, --semantics <comment>', 'Assign a semantic value to asset')*/
     .action(start_bilrost_if_not_running((reference, options) => {
         const identifier = options.identifier || find_workspace_url();
-        return am_actions.update_asset(identifier, reference, options);
+        const ref = resolve_asset_ref(reference);
+        return am_actions.update_asset(identifier, ref, options);
     }))
     .on('--help', () => {
         console.log();
@@ -316,7 +329,8 @@ program
     .option('-i, --identifier <identifier>', 'workspace identifier')
     .action(start_bilrost_if_not_running((reference, options) => {
         const identifier = options.identifier || find_workspace_url();
-        return am_actions.delete_asset(identifier, reference);
+        const ref = resolve_asset_ref(reference);
+        return am_actions.delete_asset(identifier, ref);
     }));
 
 program.command(' -- ');
@@ -331,13 +345,14 @@ program
     }));
 
 program
-    .command('subscribe <descriptor>')
+    .command('subscribe <asset_reference>')
     .description('Subscribe to an asset')
     .option('-i, --identifier <identifier>', 'workspace identifier')
-    .action(start_bilrost_if_not_running((descriptor, options) => {
+    .action(start_bilrost_if_not_running((reference, options) => {
         const identifier = options.identifier || find_workspace_url();
         const type = 'ASSET';
-        return vcs_actions.subscribe(identifier, type, descriptor);
+        const ref = resolve_asset_ref(reference);
+        return vcs_actions.subscribe(identifier, type, ref);
     }))
     .on('--help', () => {
         console.log();
@@ -350,18 +365,19 @@ program
     });
 
 program
-    .command('unsubscribe <descriptor>')
+    .command('unsubscribe <asset_reference>')
     .description('Unsubscribe specific subscription from given descriptor')
     .option('-i, --identifier <identifier>', 'workspace identifier')
-    .action(start_bilrost_if_not_running((descriptor, options) => {
+    .action(start_bilrost_if_not_running((reference, options) => {
         const identifier = options.identifier || find_workspace_url();
+        const ref = resolve_asset_ref(reference);
         return vcs_actions.get_subscription_list(identifier)
             .then(list => {
-                const subscription_id = list.find(sub => sub.descriptor === descriptor).id;
+                const subscription_id = list.find(sub => sub.descriptor === ref).id;
                 if (subscription_id) {
                     return vcs_actions.unsubscribe(identifier, subscription_id);
                 } else {
-                    throw `Subscription id related to ${descriptor} is not found`;
+                    throw `Subscription id related to ${ref} is not found`;
                 }
             });
     }))
@@ -399,7 +415,8 @@ program
     .option('-i, --identifier <identifier>', 'workspace identifier')
     .action(start_bilrost_if_not_running((reference, options) => {
         const identifier = options.identifier || find_workspace_url();
-        return vcs_actions.stage(identifier, reference);
+        const ref = resolve_asset_ref(reference);
+        return vcs_actions.stage(identifier, ref);
     }));
 
 program
@@ -408,7 +425,8 @@ program
     .option('-i, --identifier <identifier>', 'workspace identifier')
     .action(start_bilrost_if_not_running((reference, options) => {
         const identifier = options.identifier || find_workspace_url();
-        return vcs_actions.unstage(identifier, reference);
+        const ref = resolve_asset_ref(reference);
+        return vcs_actions.unstage(identifier, ref);
     }));
 
 program
