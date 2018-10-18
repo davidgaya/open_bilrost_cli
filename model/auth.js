@@ -44,7 +44,10 @@ module.exports = config => {
                         }, () => {});
                 }, 1000);
             } else {
-                reject(err);
+                reject({
+                    message: 'Unexpected body answer',
+                    body: err.toString()
+                });
             }
         }));
 
@@ -64,7 +67,7 @@ module.exports = config => {
         } else {
             throw {
                 message: 'Unexpected body answer',
-                body: body 
+                body: body
             };
         }
     });
@@ -80,11 +83,11 @@ module.exports = config => {
         } else {
             throw {
                 message: 'Unexpected body answer',
-                body: body 
+                body: body
             };
         }
     });
-   
+
     return {
         login: login,
         session: session,

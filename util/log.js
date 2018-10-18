@@ -6,22 +6,20 @@
 
 const chalk = require('chalk');
 const prettyjson = require('prettyjson');
-const Prettyerror = require('pretty-error');
-const pe = new Prettyerror();
+
+const no_color_options = {
+    noColor: true
+};
 
 const output_json = data => {
-    const options = {
-        noColor: true
-    };
-    console.info(chalk.white(prettyjson.render(data, options)));
+    console.info(chalk.white(prettyjson.render(data, no_color_options)));
 };
 
 const spawn_error = error => {
-    if (!error.message) {
-        console.error(chalk.red(pe.render(error.body || error)));
-    } else {
-        console.error(chalk.red(error.message));
+    if (error.statusCode) {
+        delete error.statusCode;
     }
+    console.error(chalk.red(prettyjson.render(error, no_color_options)));
 };
 
 const spawn_warning = message => {
