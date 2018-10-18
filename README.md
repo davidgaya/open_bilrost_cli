@@ -45,9 +45,9 @@ Bilrost comes with a command line tool to interact with the version control syst
 
 1/ Create workspace.
 
-A workspace is the local representation of a project. This is where assets are updated.
+A workspace is the local representation of a project mapped from a github repository. This is where assets are updated.
 
-`bilrost create-workspace test-workspace relative/path/to/folder --organization org_name --project-name test --branch master --description "test workspace"`
+`bilrost create-workspace relative/path/to/folder/to/create organization test master --description "test workspace"`
 
 2/ Create branch.
 
