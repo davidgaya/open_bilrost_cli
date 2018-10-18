@@ -8,16 +8,19 @@ module.exports = config => {
 
     const req = require('../util/req')(config.url);
 
-    const add_workspace_to_favorite = uri => req(
+    const add_workspace_to_favorite = (name, file_uri) => req(
         'post',
         '/assetmanager/workspaces/favorites',
         {
-            body: { file_uri: uri }
+            body: {
+                file_uri,
+                name
+            }
         }
     ).then(body => {
-        if (body && body.name) {
+        if (body) {
             return {
-                message: body.name + ' successfully added',
+                message: `${name} workspace successfully bookmarked`,
                 body: body
             };
         } else {

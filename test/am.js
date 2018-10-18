@@ -19,7 +19,7 @@ describe('Am model', function () {
             .then(output => {
                 should.deepEqual({
                     body: body,
-                    message: 'test successfully added'
+                    message: 'test workspace successfully bookmarked'
                 }, output);
                 stub.restore_request('post');
                 done();
