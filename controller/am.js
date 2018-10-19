@@ -17,7 +17,7 @@ const am_model = require('../model/am')(am_config);
 
 const update_asset_usecase = require('../usecases/update_asset');
 
-const add_workspace_to_favorite = path => am_model.add_workspace_to_favorite(file_uri(path))
+const add_workspace_to_favorite = (name, path) => am_model.add_workspace_to_favorite(name, file_uri(path))
     .then(log.spawn_success)
     .catch(log.spawn_error);
 
