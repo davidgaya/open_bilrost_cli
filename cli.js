@@ -28,7 +28,7 @@ const are_you_sure = [
     {
         type: 'input',
         name: 'are_you_sure',
-        message: 'This will remove all resources along subscription/stage lists.\n Are you sure this is what you want?\n input y/n to answer'
+        message: 'This will remove resources and subscription/stage lists.\n Are you sure this is what you want?\n input y/n to answer'
     }
 ];
 
@@ -64,7 +64,6 @@ const find_workspace_url = (pwd = program.pwd) => {
     try {
         return workspace_finder(pwd);
     } catch(err) {
-        logger.spawn_error(err.toString());
         throw err;
     }
 };
@@ -124,51 +123,66 @@ program.command(' -- ');
 
 program
     .command('list-workspaces')
+    .alias('list-workspace')
     .description('List workspaces available in the favorite list')
     .option('-i, --identifier <identifier>', 'workspace identifier')
     .option('-v, --verbose', 'verbose to display asset content')
-    .action(start_bilrost_if_not_running(options => cb_actions.list_workspace(options.identifier, options.verbose)));
+    .action(start_bilrost_if_not_running(options => cb_actions.list_workspace(options.identifier, options.verbose)))
+    .on('--help', () => {
+        console.log();
+        console.log('  Additional information:');
+        console.log();
+
+        console.log('  Only one workspace is listed when using identifier option');
+    });
 
 program
-    .command('add-workspace [relative_path]')
-    .description('Add workspace to the favorite list')
-    .action(start_bilrost_if_not_running(workspace_relative_path => {
+    .command('add-workspace <identifier> [relative_path]')
+    .alias('bookmark')
+    .description('Add workspace to the favorite list with an associated name identifier')
+    .action(start_bilrost_if_not_running((name, workspace_relative_path) => {
         const workspace_absolute_path = Path.join(program.pwd, workspace_relative_path ? workspace_relative_path : '');
-        am_actions.add_workspace_to_favorite(workspace_absolute_path);
-    }));
+        am_actions.add_workspace_to_favorite(name, workspace_absolute_path);
+    }))
+    .on('--help', () => {
+        console.log();
+        console.log('  Additional information:');
+        console.log();
+
+        console.log('  Input identifier can be then used as an argument to apply to commands against associated workspace.');
+    });
 
 program
     .command('forget-workspace <identifier>')
-    .description('Forget a project')
+    .alias('unbookmark')
+    .description('Forget a project from favorite list')
     .action(start_bilrost_if_not_running(am_actions.forget_workspace_in_favorite))
     .on('--help', () => {
         console.log();
         console.log('  Additional information:');
         console.log();
 
-        console.log('  Given identifier can be a workspace name or file uri');
-        console.log('  Run "bilrost list-workspaces" to get these identifiers');
+        console.log('  Given identifier can be a workspace name or file uri.');
+        console.log('  Run "bilrost list-workspaces" to get these identifiers.');
     });
 
 program
     .command('forget-workspaces')
+    .alias('unbookmark-all')
     .description('Forget all workspaces')
     .action(start_bilrost_if_not_running(am_actions.forget_workspaces_in_favorite));
 
 program
-    .command('create-workspace <relative_path>')
+    .command('create-workspace <relative_path> <organization> <repository> <branch>')
     .description('Create a workspace')
-    .option('-o, --organization <organization>', 'organization name')
-    .option('-p, --project-name <project_name>', 'project name')
     .option('-d, --description <description>', 'description')
-    .option('-b, --branch <branch>', 'branch')
-    .action(start_bilrost_if_not_running((workspace_relative_path, options) => {
+    .action(start_bilrost_if_not_running((workspace_relative_path, organization, repository, branch, options) => {
         const input = {
             path: Path.join(program.pwd, workspace_relative_path ? workspace_relative_path : ''),
-            organization: options.organization,
-            project_name: options.projectName,
+            organization: organization,
+            project_name: repository,
+            branch: branch,
             description: options.description,
-            branch: options.branch,
             from_repo: true
         };
         return am_actions.create_workspace(input);
@@ -177,12 +191,12 @@ program
         console.log();
         console.log('  Additional information:');
         console.log();
-        console.log('  Target directory given from <absolute_path> must be empty');
+        console.log('  Target directory given from <relative_path> will be created.');
         console.log('  All options are required to be passed');
         console.log();
         console.log('  Example:');
         console.log();
-        console.log('  bilrost create-workspace foo C:\\path\\to\\workspace -o organization_name -p project_name -b master -d "first workspace"');
+        console.log('  bilrost create-workspace folder_name organization_name project_name -master');
     });
 
 program
@@ -206,11 +220,12 @@ program
     .on('--help', () => {
         console.log();
         console.log('  WARNING');
-        console.log('  You will LOSE your data. All resources will be removed along subscription and stage lists');
+        console.log('  You will LOSE some data. All resources, subscription and stage lists are removed.');
     });
 
 program
     .command('delete-workspace <relative_path>')
+    .alias('remove-workspace')
     .description('Delete a workspace')
     .option('-i, --identifier <identifier>', 'workspace identifier')
     .action(start_bilrost_if_not_running((workspace_relative_path, options) => {
