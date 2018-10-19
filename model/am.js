@@ -10,7 +10,7 @@ module.exports = config => {
 
     const add_workspace_to_favorite = (name, file_uri) => req(
         'post',
-        '/assetmanager/workspaces/favorites',
+        '/assetmanager/favorites',
         {
             body: {
                 file_uri,
@@ -33,7 +33,7 @@ module.exports = config => {
 
     const forget_workspace_in_favorite = identifier => req(
         'delete',
-        '/assetmanager/workspaces/' + encodeURIComponent(identifier) + '/favorites'
+        '/assetmanager/favorites/' + encodeURIComponent(identifier)
     ).then(body => {
         if (body === 'Ok') {
             return { message: 'Successfully forgotten' };
@@ -47,7 +47,7 @@ module.exports = config => {
 
     const forget_workspaces_in_favorite = () => req(
         'post',
-        '/assetmanager/workspaces/favorites/reset'
+        '/assetmanager/favorites/reset'
     ).then(body => {
         if (body === 'Ok') {
             return { message: 'Successfully forgotten' };
