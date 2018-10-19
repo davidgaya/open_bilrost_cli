@@ -80,9 +80,22 @@ const list_asset = (identifier, reference, verbose) => am_model.list_asset(ident
     .then(log.spawn_success)
     .catch(log.spawn_error);
 
-const rename_asset = (identifier, ref, new_ref) => am_model.rename_asset(identifier, ref, new_ref)
-    .then(log.spawn_success)
-    .catch(log.spawn_error);
+let rename_asset;
+/* jshint ignore:start */
+rename_asset = async (identifier, ref, new_ref, verbose) => {
+    try {
+        const { body } = await am_model.list_asset(identifier, ref);
+        const modified = body.meta.modified || body.meta.created;
+        const res = await am_model.rename_asset(identifier, ref, new_ref, modified);
+        if (!verbose) {
+            delete res.body;
+        }
+        log.spawn_success(res);
+    } catch(err) {
+        log.spawn_error(err);
+    }
+};
+/* jshint ignore:end */
 
 const delete_asset = (identifier, reference) => am_model.delete_asset(identifier, reference)
     .then(log.spawn_success)

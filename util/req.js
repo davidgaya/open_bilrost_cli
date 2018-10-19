@@ -18,8 +18,8 @@ module.exports = base_url => (method, url, options) => new Promise((resolve, rej
         const isStatusCodeValid = statusCode >= 200 && statusCode < 300;
         if (err || !isStatusCodeValid) {
             reject({
-                statusCode: res.statusCode,
-                message: err || res.statusCode + ' unexpected status code.',
+                statusCode,
+                message: err || statusCode + ' unexpected status code.',
                 body
             });
         } else {
