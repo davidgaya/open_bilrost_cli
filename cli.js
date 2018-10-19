@@ -156,19 +156,16 @@ program
     .action(start_bilrost_if_not_running(am_actions.forget_workspaces_in_favorite));
 
 program
-    .command('create-workspace <relative_path>')
+    .command('create-workspace <relative_path> <organization> <repository> <branch>')
     .description('Create a workspace')
-    .option('-o, --organization <organization>', 'organization name')
-    .option('-p, --project-name <project_name>', 'project name')
     .option('-d, --description <description>', 'description')
-    .option('-b, --branch <branch>', 'branch')
-    .action(start_bilrost_if_not_running((workspace_relative_path, options) => {
+    .action(start_bilrost_if_not_running((workspace_relative_path, organization, repository, branch, options) => {
         const input = {
             path: Path.join(program.pwd, workspace_relative_path ? workspace_relative_path : ''),
-            organization: options.organization,
-            project_name: options.projectName,
+            organization: organization,
+            project_name: repository,
+            branch: branch,
             description: options.description,
-            branch: options.branch,
             from_repo: true
         };
         return am_actions.create_workspace(input);
@@ -177,12 +174,12 @@ program
         console.log();
         console.log('  Additional information:');
         console.log();
-        console.log('  Target directory given from <absolute_path> must be empty');
+        console.log('  Target directory given from <relative_path> will be created.');
         console.log('  All options are required to be passed');
         console.log();
         console.log('  Example:');
         console.log();
-        console.log('  bilrost create-workspace foo C:\\path\\to\\workspace -o organization_name -p project_name -b master -d "first workspace"');
+        console.log('  bilrost create-workspace folder_name organization_name project_name -master');
     });
 
 program
@@ -211,6 +208,7 @@ program
 
 program
     .command('delete-workspace <relative_path>')
+    .alias('remove-workspace')
     .description('Delete a workspace')
     .option('-i, --identifier <identifier>', 'workspace identifier')
     .action(start_bilrost_if_not_running((workspace_relative_path, options) => {
