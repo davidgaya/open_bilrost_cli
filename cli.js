@@ -76,6 +76,27 @@ const resolve_asset_ref = ref => {
     }
 };
 
+const resolve_resource_ref = ref => {
+    if (ref.startsWith('/resources/')) {
+        return ref;
+    } else if (ref === '') {
+        return ref;
+    } else {
+        return `/resources/${ref.replace(/\\/g, '/')}`;
+    }
+};
+
+const resolve_resource_refs_in_object = obj => Object.keys(obj)
+    .reduce((acc, key) => {
+        const value = obj[key];
+        if (typeof value === 'string') {
+            acc[key] = resolve_resource_ref(value);
+        } else if (value instanceof Array) {
+            acc[key] = value.map(resolve_resource_ref);
+        }
+        return acc;
+    }, {});
+
 program
     .version(pack.version)
     .option('-P, --pwd <relative>', 'Specify [relative] path of the folder to parse from this location', resolve_path, process.cwd())
@@ -324,6 +345,11 @@ program
     .action(start_bilrost_if_not_running((reference, options) => {
         const identifier = options.identifier || find_workspace_url();
         const ref = resolve_asset_ref(reference);
+        options = Object.assign(options, resolve_resource_refs_in_object({
+            main: options.main,
+            remove: options.remove,
+            add: options.add
+        }));
         return am_actions.update_asset(identifier, ref, options);
     }))
     .on('--help', () => {
