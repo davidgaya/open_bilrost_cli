@@ -102,7 +102,6 @@ const clean = cwd => deploy_log.list_resources(cwd)
     .then(() => remove_all_empty_directories(deploy_log.FOLDER_NAME));
 
 const install = (deploy_file_name, cwd, deploy_tmp_directory, is_copy) => {
-    let sub_id = '';
     const get_time = start_timer();
 
     const copy_or_link_content = (resources, workspace_path, base, dest) => Promise.all(resources.map(resource_absolute_path => {
@@ -117,14 +116,13 @@ const install = (deploy_file_name, cwd, deploy_tmp_directory, is_copy) => {
 
     const install_from_project = origin => origin.deploys.reduce((deploy_sequence, { ref, base = './', dest = './'}) => deploy_sequence
         .then(() => vcs.subscribe(origin.file_uri, 'ASSET', ref))
-        .then(sub => {
-            sub_id = sub.body.id;
+        .then(() => {
             console.info(chalk.green(`${get_time()}: Checked out ${ref} asset`));
         })
         .then(() => get_asset_resources(origin.file_uri, ref, origin.workspace_path))
         .then(resources => copy_or_link_content(resources, origin.workspace_path, base, dest))
         .then(update_log)
-        .then(() => vcs.unsubscribe(origin.file_uri, sub_id))
+        .then(() => vcs.unsubscribe(origin.file_uri, ref))
         .then(() => {
             console.info(chalk.green(`${get_time()}: Installed ${ref} asset content to ${dest}`));
         }),
