@@ -49,10 +49,10 @@ module.exports = (asset, workspace_path, options) => {
             asset.dependencies = asset.dependencies.filter(dep => !dep.includes(dep_opt));
         });
     }
-    if (main_opt) {
+    if (main_opt !== undefined) {
         asset.main = main_opt;
     }
-    if (comment_opt) {
+    if (comment_opt !== undefined) {
         asset.comment = comment_opt;
     }
     return Promise.all(parse_dependencies)
