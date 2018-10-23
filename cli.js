@@ -287,8 +287,8 @@ program
         console.log('  Examples:');
         console.log();
         console.log('  "bilrost list-assets" to list all assets/namespaces in root namespace');
-        console.log('  "bilrost list-assets /assets/namespace_name/" to list all assets/namespaces within "namespace_name"');
-        console.log('  "bilrost list-assets /assets/namespace_name/foo -v" to retrieve "foo" content');
+        console.log('  "bilrost list-assets namespace_name/" to list all namespaces within "namespace_name"');
+        console.log('  "bilrost list-assets namespace_name/foo -v" to retrieve "foo" content');
     });
 
 program
@@ -329,7 +329,7 @@ program
         console.log();
         console.log('  Examples:');
         console.log();
-        console.log('  bilrost rename-asset /assets/old_foo /assets/new_foo');
+        console.log('  bilrost rename-asset old_foo new_foo');
     });
 
 program
@@ -361,7 +361,7 @@ program
         console.log();
         console.log('  Examples:');
         console.log();
-        console.log('  bilrost update-asset /assets/foo --add /resources/directory,/resources/texture.png --remove /resources/old_texture_directory --main /resources/bar --comment "new_comment"');
+        console.log('  bilrost update-asset foo --add a\\b,texture.png --remove old_texture_directory --main bar --comment "new_comment"');
     });
 
 program
@@ -412,15 +412,7 @@ program
     .action(start_bilrost_if_not_running((reference, options) => {
         const identifier = options.identifier || find_workspace_url();
         const ref = resolve_asset_ref(reference);
-        return vcs_actions.get_subscription_list(identifier)
-            .then(list => {
-                const subscription_id = list.find(sub => sub.descriptor === ref).id;
-                if (subscription_id) {
-                    return vcs_actions.unsubscribe(identifier, subscription_id);
-                } else {
-                    throw `Subscription id related to ${ref} is not found`;
-                }
-            });
+        return vcs_actions.unsubscribe(identifier, ref);
     }))
     .on('--help', () => {
         console.log();

@@ -14,8 +14,18 @@ const subscribe = (identifier, type, descriptor) => vcs.subscribe(identifier, {
     })
     .then(log.spawn_success).catch(log.spawn_error);
 
-const unsubscribe = (identifier, subscription_id) => vcs.unsubscribe(identifier, subscription_id)
-    .then(log.spawn_success).catch(log.spawn_error);
+const unsubscribe = (identifier, ref) => vcs.get_subscription_list(identifier)
+    .then(res => {
+        const list = res.body.subscriptions;
+        const subscription = list.find(sub => sub.descriptor === ref);
+        if (subscription && subscription.id) {
+            return vcs.unsubscribe(identifier, subscription.id);
+        } else {
+            throw `Subscription id related to ${ref} is not found`;
+        }
+    })
+    .then(log.spawn_success)
+    .catch(log.spawn_error);
 
 const stage = (identifier, reference) => vcs.stage(identifier, reference)
     .then(log.spawn_success).catch(log.spawn_error);
