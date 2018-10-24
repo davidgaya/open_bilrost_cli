@@ -44,6 +44,6 @@ module.exports = (identifier, asset_name, directory_relative_path) => cb.list_wo
             })
             .then(() => vcs.stage(identifier, asset_name))
             .then(() => vcs.commit(identifier, asset_name + " folder asset"))
-            .then(() => vcs.unsubscribe(identifier, subscription_id))
+            .then(() => vcs.unsubscribe(identifier, asset_name))
             .then(() => ifs.remove(tmp_def_file_absolute));
     });

@@ -76,6 +76,27 @@ const resolve_asset_ref = ref => {
     }
 };
 
+const resolve_resource_ref = ref => {
+    if (ref.startsWith('/resources/')) {
+        return ref;
+    } else if (ref === '') {
+        return ref;
+    } else {
+        return `/resources/${ref.replace(/\\/g, '/')}`;
+    }
+};
+
+const resolve_resource_refs_in_object = obj => Object.keys(obj)
+    .reduce((acc, key) => {
+        const value = obj[key];
+        if (typeof value === 'string') {
+            acc[key] = resolve_resource_ref(value);
+        } else if (value instanceof Array) {
+            acc[key] = value.map(resolve_resource_ref);
+        }
+        return acc;
+    }, {});
+
 program
     .version(pack.version)
     .option('-P, --pwd <relative>', 'Specify [relative] path of the folder to parse from this location', resolve_path, process.cwd())
@@ -267,9 +288,9 @@ program
         console.log('  Examples:');
         console.log();
         console.log('  "bilrost list-assets" to list all assets/namespaces in root namespace');
-        console.log('  "bilrost list-assets /assets/namespace/" to list all assets/namespaces within "namespace"');
-        console.log('  "bilrost list-assets /assets/namespace/bar" to display "bar" asset content');
-        console.log('  "bilrost list-assets /assets/namespace/bar/ -v" to retrieve all content in "bar" namespace');
+        console.log('  "bilrost list-assets namespace/" to list all assets/namespaces within "namespace"');
+        console.log('  "bilrost list-assets namespace/bar" to display "bar" asset content');
+        console.log('  "bilrost list-assets namespace/bar/ -v" to retrieve all content in "bar" namespace');
     });
 
 program
@@ -328,6 +349,11 @@ program
     .action(start_bilrost_if_not_running((reference, options) => {
         const identifier = options.identifier || find_workspace_url();
         const ref = resolve_asset_ref(reference);
+        options = Object.assign(options, resolve_resource_refs_in_object({
+            main: options.main,
+            remove: options.remove,
+            add: options.add
+        }));
         return am_actions.update_asset(identifier, ref, options);
     }))
     .on('--help', () => {
@@ -339,7 +365,7 @@ program
         console.log();
         console.log('  Examples:');
         console.log();
-        console.log('  bilrost update-asset /assets/foo --add /resources/directory,/resources/texture.png --remove /resources/old_texture_directory --main /resources/bar --comment "new_comment"');
+        console.log('  bilrost update-asset foo --add a\\b,texture.png --remove old_texture_directory --main bar --comment "new_comment"');
     });
 
 program
@@ -390,15 +416,7 @@ program
     .action(start_bilrost_if_not_running((reference, options) => {
         const identifier = options.identifier || find_workspace_url();
         const ref = resolve_asset_ref(reference);
-        return vcs_actions.get_subscription_list(identifier)
-            .then(list => {
-                const subscription_id = list.find(sub => sub.descriptor === ref).id;
-                if (subscription_id) {
-                    return vcs_actions.unsubscribe(identifier, subscription_id);
-                } else {
-                    throw `Subscription id related to ${ref} is not found`;
-                }
-            });
+        return vcs_actions.unsubscribe(identifier, ref);
     }))
     .on('--help', () => {
         console.log();
