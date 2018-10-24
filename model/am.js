@@ -174,18 +174,21 @@ module.exports = config => {
         }
     });
 
-    const rename_asset = (identifier, ref, new_ref) => req(
+    const rename_asset = (identifier, ref, new_ref, modified) => req(
         'post',
         '/assetmanager/workspaces/' + encodeURIComponent(identifier) + '/rename' + ref,
         {
             body: {
                 new: new_ref
+            },
+            headers: {
+                'Last-Modified': modified
             }
         }
     ).then(body => {
         if (body) {
             return {
-                message: ref + ' successfully renamed',
+                message: `${ref} successfully renamed to ${new_ref}`,
                 body: body
             };
         } else {

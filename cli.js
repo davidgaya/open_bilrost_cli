@@ -269,26 +269,28 @@ program.command(' -- ');
 
 program
     .command('list-assets [asset_reference]')
+    .alias('list-asset')
     .description('List assets')
     .option('-i, --identifier <identifier>', 'workspace identifier')
     .option('-v, --verbose', 'verbose to display asset content')
     .action(start_bilrost_if_not_running((reference = '/assets/', options) => { // jshint ignore:line
         const identifier = options.identifier || find_workspace_url();
         const ref = resolve_asset_ref(reference);
-        return am_actions.list_asset(identifier, ref, program.verbose);
+        return am_actions.list_asset(identifier, ref, options.verbose);
     }))
     .on('--help', () => {
         console.log();
         console.log('  Additional information:');
         console.log();
-        console.log('  Verbose option displays asset contents and namespace references (-v). Only asset/namespace references are shown otherwise');
+        console.log('  Verbose option displays asset contents and namespace references (-v). Only asset/namespace references are shown otherwise, except if the given asset reference is not a namespace');
         console.log('  Asset reference can point to a namespace');
         console.log();
         console.log('  Examples:');
         console.log();
         console.log('  "bilrost list-assets" to list all assets/namespaces in root namespace');
-        console.log('  "bilrost list-assets namespace_name/" to list all namespaces within "namespace_name"');
-        console.log('  "bilrost list-assets namespace_name/foo -v" to retrieve "foo" content');
+        console.log('  "bilrost list-assets namespace/" to list all assets/namespaces within "namespace"');
+        console.log('  "bilrost list-assets namespace/bar" to display "bar" asset content');
+        console.log('  "bilrost list-assets namespace/bar/ -v" to retrieve all content in "bar" namespace');
     });
 
 program
@@ -305,8 +307,8 @@ program
         console.log();
         console.log('  Additional information:');
         console.log();
-        console.log('  Asset is empty if no definition file is given');
-        console.log('  Use "update" command for feeding empty asset');
+        console.log('  Asset is empty if no definition file path is given');
+        console.log('  Use "update" command for feeding empty asset with values');
         console.log('  All key/value pairs are optional in asset definition file');
         console.log();
         console.log('  Examples:');
@@ -319,11 +321,13 @@ program
     .command('rename-asset <asset_to_rename_reference> <new_reference>')
     .description('Rename an asset')
     .option('-i, --identifier <identifier>', 'workspace identifier')
+    .option('-v, --verbose', 'verbose to display renamed asset content')
+    .option('')
     .action(start_bilrost_if_not_running((reference, new_reference, options) => {
         const identifier = options.identifier || find_workspace_url();
         const ref = resolve_asset_ref(reference);
         const new_ref = resolve_asset_ref(new_reference);
-        return am_actions.rename_asset(identifier, ref, new_ref);
+        return am_actions.rename_asset(identifier, ref, new_ref, options.verbose);
     }))
     .on('--help', () => {
         console.log();
@@ -522,7 +526,7 @@ program
     .option('-v, --verbose', 'verbose')
     .action(start_bilrost_if_not_running(options => {
         const identifier = options.identifier || find_workspace_url();
-        return cb_actions.list_branches(identifier, program.verbose);
+        return cb_actions.list_branches(identifier, options.verbose);
     }))
     .on('--help', () => {
         console.log();

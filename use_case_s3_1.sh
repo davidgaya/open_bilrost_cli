@@ -30,7 +30,10 @@ echo "Alice saves her first resource"
 ls >> $RESOURCE_PATH
 
 echo "Alice creates an asset"
-bilrost create-asset test.level -B
+bilrost create-asset new.level -B
+
+echo "Alice renames the new asset"
+bilrost rename-asset new.level test.level -B
 
 echo "Alice references the new resource as main dependency to her asset"
 bilrost update-asset test.level -m /resources/alice_resource.txt -B
