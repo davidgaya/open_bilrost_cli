@@ -71,7 +71,7 @@ const list_asset = (identifier, reference, verbose) => am_model.list_asset(ident
             if (!verbose) {
                 response.body = {
                     assets: response.body.items.map(item => item.meta.ref),
-                    namespaces: response.body.namespaces.map(item => item.ref)
+                    namespaces: response.body.namespaces
                 };
             }
         }
