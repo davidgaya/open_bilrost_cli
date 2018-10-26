@@ -43,7 +43,7 @@ module.exports = (identifier, asset_name, directory_relative_path) => cb.list_wo
                 subscription_id = sub.body.id;
             })
             .then(() => vcs.stage(identifier, asset_name))
-            .then(() => vcs.commit(identifier, asset_name + " folder asset"))
+            .then(() => vcs.push(identifier, asset_name + " folder asset"))
             .then(() => vcs.unsubscribe(identifier, asset_name))
             .then(() => ifs.remove(tmp_def_file_absolute));
     });

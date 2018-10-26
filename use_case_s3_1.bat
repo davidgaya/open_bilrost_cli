@@ -54,8 +54,8 @@ call bilrost subscribe test.level -B
 echo "Alice stages this asset"
 call bilrost stage test.level -B
 
-echo "Alice commits the stage list"
-call bilrost commit "Test commit" -B
+echo "Alice pushes the stage list"
+call bilrost push "Test commit" -B
 
 echo "Alice deletes her first resource"
 rm %RESOURCE_PATH%
@@ -66,8 +66,8 @@ call bilrost delete-asset test.level -B
 echo "Alice stages the asset"
 call bilrost stage test.level -B
 
-echo "Alice commits the stage list"
-call bilrost commit "Undo test commit" -B
+echo "Alice pushes the stage list"
+call bilrost push "Undo test commit" -B
 
 echo "Alice goes back to parent folder"
 cd %DIR_PATH%

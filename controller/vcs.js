@@ -30,7 +30,7 @@ const unsubscribe = (identifier, ref) => vcs.get_subscription_list(identifier)
 const stage = (identifier, reference) => vcs.stage(identifier, reference)
     .then(log.spawn_success).catch(log.spawn_error);
 
-const commit = (identifier, comment) => vcs.commit(identifier, comment)
+const push = (identifier, comment) => vcs.push(identifier, comment)
     .then(log.spawn_success).catch(log.spawn_error);
 
 const get_stage_list = identifier => vcs.get_stage_list(identifier)
@@ -55,7 +55,7 @@ module.exports = {
     subscribe,
     unsubscribe,
     stage,
-    commit,
+    push,
     get_subscription_list,
     get_status,
     get_stage_list,

@@ -118,13 +118,13 @@ describe('vcs model', function () {
             });
     });
 
-    it('#commit -> ok', function (done) {
+    it('#push -> ok', function (done) {
         const body = '#1';
         stub.request('post', null, 200, body);
-        vcs.commit('test', '#1')
+        vcs.push('test', '#1')
             .then(output => {
                 should.deepEqual({
-                    message: 'Successfully commited',
+                    message: 'Successfully pushed',
                     body: body
                 }, output);
                 stub.restore_request('post');
@@ -132,10 +132,10 @@ describe('vcs model', function () {
             }).catch(done);
     });
 
-    it('#commit -> wrong status code', function (done) {
+    it('#push -> wrong status code', function (done) {
         const status_code = 300;
         stub.request('post', null, status_code, {});
-        vcs.commit('test', '#1')
+        vcs.push('test', '#1')
             .then(done).catch(err => {
                 should.equal(err.message.indexOf(status_code.toString()), 0);
                 stub.restore_request('post');
@@ -143,10 +143,10 @@ describe('vcs model', function () {
             });
     });
 
-    it('#commit -> spawn error', function (done) {
+    it('#push -> spawn error', function (done) {
         const error = new Error('failure');
         stub.request('post', error, {}, {});
-        vcs.commit('test', '#1')
+        vcs.push('test', '#1')
             .then(done).catch(err => {
                 should.deepEqual(err.message, error);
                 stub.restore_request('post');
