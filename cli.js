@@ -17,7 +17,7 @@ const am_actions = require('./controller/am');
 const cb_actions = require('./controller/cb');
 const vcs_actions = require('./controller/vcs');
 const config_actions = require('./controller/config');
-const commit_folder_asset_action = require('./controller/custom/commit_folder_asset');
+const push_folder_asset_action = require('./controller/custom/push_folder_asset');
 const workspace_finder = require('./util/workspace_finder');
 const auth_actions = require('./controller/auth');
 const pack = require('./package.json');
@@ -489,22 +489,22 @@ program
     }));
 
 program
-    .command('commit <comment>')
-    .description('Commit staged items')
+    .command('push <commit_comment>')
+    .description('push staged items')
     .option('-i, --identifier <identifier>', 'workspace identifier')
     .action(start_bilrost_if_not_running((comment, options) => {
         const identifier = options.identifier || find_workspace_url();
-        return vcs_actions.commit(identifier, comment);
+        return vcs_actions.push(identifier, comment);
     }));
 
 
 program
-    .command('commit-folder-asset <reference> <directory_relative_path>')
-    .description('Commit a folder asset')
+    .command('push-folder-asset <reference> <directory_relative_path>')
+    .description('push a folder asset')
     .option('-i, --identifier <identifier>', 'workspace identifier')
     .action(start_bilrost_if_not_running((reference, directory_relative_path, options) => {
         const identifier = options.identifier || find_workspace_url();
-        return commit_folder_asset_action(identifier, reference, directory_relative_path);
+        return push_folder_asset_action(identifier, reference, directory_relative_path);
     }))
     .on('--help', () => {
         console.log();
@@ -514,7 +514,7 @@ program
         console.log();
         console.log('  Examples:');
         console.log();
-        console.log('  bilrost commit-folder-asset /assets/duck ./duck');
+        console.log('  bilrost push-folder-asset /assets/duck ./duck');
     });
 
 program.command(' -- ');

@@ -17,7 +17,7 @@ module.exports = config => {
                 body: body
             };
         } else {
-            throw { 
+            throw {
                 message: 'Undefined body answer'
             };
         }
@@ -32,7 +32,7 @@ module.exports = config => {
                 body: body
             };
         } else {
-            throw { 
+            throw {
                 message: 'Undefined body answer'
             };
         }
@@ -47,7 +47,7 @@ module.exports = config => {
                 message: reference + ' successfully staged'
             };
         } else {
-            throw { 
+            throw {
                 message: 'Undefined body answer',
                 body: body
             };
@@ -63,7 +63,7 @@ module.exports = config => {
                 message: reference + ' successfully unstaged'
             };
         } else {
-            throw { 
+            throw {
                 message: 'Undefined body answer',
                 body: body
             };
@@ -79,16 +79,16 @@ module.exports = config => {
                 message: 'successfully reset'
             };
         } else {
-            throw { 
+            throw {
                 message: 'Undefined body answer',
                 body: body
             };
         }
     });
 
-    const commit = (identifier, comment) => req(
+    const push = (identifier, comment) => req(
         'post',
-        '/assetmanager/workspaces/' + encodeURIComponent(identifier) + '/commits',
+        '/assetmanager/workspaces/' + encodeURIComponent(identifier) + '/push',
         {
             body: {
                 message: comment
@@ -97,11 +97,11 @@ module.exports = config => {
     ).then(body => {
         if (body) {
             return {
-                message: 'Successfully commited',
+                message: 'Successfully pushed',
                 body: body
             };
         } else {
-            throw { 
+            throw {
                 message: 'Undefined body answer'
             };
         }
@@ -121,7 +121,7 @@ module.exports = config => {
                 body: body
             };
         } else {
-            throw { 
+            throw {
                 message: 'Undefined body answer'
             };
         }
@@ -140,7 +140,7 @@ module.exports = config => {
                 body: body
             };
         } else {
-            throw { 
+            throw {
                 message: 'Undefined body answer'
             };
         }
@@ -155,7 +155,7 @@ module.exports = config => {
                 message: 'Successfully unsubscribed'
             };
         } else {
-            throw { 
+            throw {
                 message: 'Undefined body answer',
                 body: body
             };
@@ -171,7 +171,7 @@ module.exports = config => {
                 message: 'Successfully reset'
             };
         } else {
-            throw { 
+            throw {
                 message: 'Undefined body answer',
                 body: body
             };
@@ -184,7 +184,7 @@ module.exports = config => {
         stage,
         unstage,
         reset_stage_list,
-        commit,
+        push,
         get_commit_log,
         get_subscription_list,
         reset_subscription_list,
