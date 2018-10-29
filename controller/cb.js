@@ -25,20 +25,30 @@ const get_branch = name => cb_model.get_branch(name)
     .catch(log.spawn_error);
 
 const list_branches = (name, verbose) => cb_model.list_branches(name)
-	.then(response => {
-		if (!verbose) {
-			response.body = {
-				locals: response.body.locals.map(local => `${local.name}   <${local.status}>`),
-				remotes: response.body.remotes.map(remote => remote.name)
-			};
-		}
-		return response;
-	})
+    .then(response => {
+        if (!verbose) {
+            response.body = {
+                locals: response.body.locals.map(local => `${local.name}   <${local.status}>`),
+                remotes: response.body.remotes.map(remote => remote.name)
+            };
+        }
+        return response;
+    })
     .then(log.spawn_success)
     .catch(log.spawn_error);
 
+
+const list_resources = (name, ref, query, verbose) => cb_model.list_resources(name, ref, query)
+    .then(response => {
+        return response;
+    })
+    .then(log.spawn_success)
+    .catch(log.spawn_error);
+
+
 module.exports = {
-    list_workspace: list_workspace,
-    get_branch: get_branch,
-    list_branches: list_branches
+    list_workspace,
+    get_branch,
+    list_branches,
+    list_resources
 };

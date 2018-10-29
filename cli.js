@@ -68,18 +68,16 @@ const find_workspace_url = (pwd = program.pwd) => {
     }
 };
 
-const resolve_asset_ref = ref => {
+const resolve_asset_ref = (ref = '')  => {
     if (ref.startsWith('/assets/')) {
         return ref;
     } else {
-        return `/assets/${ref}`;
+        return `/assets/${ref.replace(/\\/g, '/')}`;
     }
 };
 
-const resolve_resource_ref = ref => {
+const resolve_resource_ref = (ref = '') => {
     if (ref.startsWith('/resources/')) {
-        return ref;
-    } else if (ref === '') {
         return ref;
     } else {
         return `/resources/${ref.replace(/\\/g, '/')}`;
@@ -144,7 +142,7 @@ program.command(' -- ');
 
 program
     .command('list-workspaces')
-    .alias('list-workspace')
+    .alias('ls-workspaces')
     .description('List workspaces available in the favorite list')
     .option('-i, --identifier <identifier>', 'workspace identifier')
     .option('-v, --verbose', 'verbose to display asset content')
@@ -269,7 +267,7 @@ program.command(' -- ');
 
 program
     .command('list-assets [asset_reference]')
-    .alias('list-asset')
+    .alias('ls-assets')
     .description('List assets')
     .option('-i, --identifier <identifier>', 'workspace identifier')
     .option('-v, --verbose', 'verbose to display asset content')
@@ -381,7 +379,22 @@ program
 program.command(' -- ');
 
 program
+    .command('list-resources [ref]')
+    .alias('ls-resources')
+    .description('Browse resources with their asset associations')
+    .option('-q, --query <search_entry>')
+    .option('-i, --identifier <identifier>', 'workspace identifier')
+    .action(start_bilrost_if_not_running((ref, options) => {
+        const identifier = options.identifier || find_workspace_url();
+        ref = resolve_resource_ref(ref);
+        return cb_actions.list_resources(identifier, ref, options.query);
+    }));
+
+program.command(' -- ');
+
+program
     .command('list-subscriptions')
+    .alias('ls-subscriptions')
     .description('Print subscription list')
     .option('-i, --identifier <identifier>', 'workspace identifier')
     .action(start_bilrost_if_not_running(options => {
@@ -439,6 +452,7 @@ program.command(' -- ');
 
 program
     .command('list-stage')
+    .alias('ls-stage')
     .description('Print stage list')
     .option('-i, --identifier <identifier>', 'workspace identifier')
     .action(start_bilrost_if_not_running(options => {
@@ -521,6 +535,7 @@ program.command(' -- ');
 
 program
     .command('list-branches')
+    .alias('ls-branches')
     .description('List available branches')
     .option('-i, --identifier <identifier>', 'workspace identifier')
     .option('-v, --verbose', 'verbose')
