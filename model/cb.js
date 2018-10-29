@@ -5,7 +5,7 @@
 'use strict';
 
 module.exports = config => {
-    
+
     const req = require('../util/req')(config.url);
 
     const list_workspace = name => req(
@@ -19,7 +19,7 @@ module.exports = config => {
         } else {
             throw {
                 message: 'Unexpected body answer',
-                body: body 
+                body: body
             };
         }
     });
@@ -35,7 +35,7 @@ module.exports = config => {
         } else {
             throw {
                 message: 'Unexpected body answer',
-                body: body 
+                body: body
             };
         }
     });
@@ -51,14 +51,31 @@ module.exports = config => {
         } else {
             throw {
                 message: 'Unexpected body answer',
-                body: body 
+                body: body
+            };
+        }
+    });
+
+    const list_resources = (name, ref, query) => req(
+        'get',
+        `/contentbrowser/workspaces/${encodeURIComponent(name)}${ref}${query ? `?q=${query}` : ''}`
+    ).then(body => {
+        if (body) {
+            return {
+                body: body
+            };
+        } else {
+            throw {
+                message: 'Unexpected body answer',
+                body: body
             };
         }
     });
 
     return {
-        list_workspace: list_workspace,
-        get_branch: get_branch,
-        list_branches: list_branches
+        list_workspace,
+        get_branch,
+        list_branches,
+        list_resources
     };
 };
