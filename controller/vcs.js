@@ -9,9 +9,9 @@ const vcs = require('../model/vcs')(am_config);
 const log = require('../util/log');
 
 const subscribe = (identifier, type, descriptor) => vcs.subscribe(identifier, {
-        type: type,
-        descriptor: descriptor
-    })
+    type: type,
+    descriptor: descriptor
+})
     .then(log.spawn_success).catch(log.spawn_error);
 
 const unsubscribe = (identifier, ref) => vcs.get_subscription_list(identifier)

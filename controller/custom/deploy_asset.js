@@ -53,14 +53,14 @@ const start_timer = () => {
 
 const get_asset_resources = (identifier, ref, workspace_path) => {
     return am_model.list_asset(identifier, ref)
-    .then(response => {
-        const dependencies = response.body.dependencies;
-        const main = response.body.main;
-        const paths_to_move = dependencies.concat(main);
-        return paths_to_move
-            .filter(ref => ref)
-            .map(ref => workspace_utilities.ref_to_absolute_path(ref, workspace_path));
-    });
+        .then(response => {
+            const dependencies = response.body.dependencies;
+            const main = response.body.main;
+            const paths_to_move = dependencies.concat(main);
+            return paths_to_move
+                .filter(ref => ref)
+                .map(ref => workspace_utilities.ref_to_absolute_path(ref, workspace_path));
+        });
 };
 
 const pass_enoent_error = err => {
@@ -128,7 +128,7 @@ const install = (deploy_file_name, cwd, deploy_tmp_directory, is_copy) => {
         }),
     Promise.resolve());
 
-    const install_from_workspace = origin => origin.deploys.reduce((deploy_sequence, { workspace_path, ref, base = './' , dest = './' }) => deploy_sequence
+    const install_from_workspace = origin => origin.deploys.reduce((deploy_sequence, { ref, base = './' , dest = './' }) => deploy_sequence
         .then(() => vcs.subscribe(origin.file_uri, 'ASSET', ref))
         .then(() => get_asset_resources(origin.file_uri, ref, origin.workspace_path))
         .then(resources => copy_or_link_content(resources, origin.workspace_path, base, dest))

@@ -25,7 +25,6 @@ module.exports = (identifier, asset_name, directory_relative_path) => cb.list_wo
         if (items.length > 1) {
             throw "More than one workspace shouldnt match the given identifier";
         }
-        let subscription_id;
         const workspace = items[0];
         const workspace_absolute = utilities.convert_file_uri_to_path(workspace.file_uri);
         const target_path = Path.join(workspace_absolute, directory_relative_path ? directory_relative_path : "");
@@ -39,9 +38,6 @@ module.exports = (identifier, asset_name, directory_relative_path) => cb.list_wo
             })
             .then(() => am.create_asset(identifier, asset_name, tmp_def_file_absolute))
             .then(() => vcs.subscribe(identifier, 'ASSET', asset_name))
-            .then(sub => {
-                subscription_id = sub.body.id;
-            })
             .then(() => vcs.stage(identifier, asset_name))
             .then(() => vcs.push(identifier, asset_name + " folder asset"))
             .then(() => vcs.unsubscribe(identifier, asset_name))

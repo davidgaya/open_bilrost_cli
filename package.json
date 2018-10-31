@@ -34,14 +34,14 @@
     "winston": "^2.2.0"
   },
   "devDependencies": {
+    "eslint": "^5.8.0",
     "find-process": "^1.1.0",
-    "jshint": "^2.9.4",
     "mocha": "^5.2.0",
     "should": "^11.2.1",
     "sinon": "^2.3.2"
   },
   "scripts": {
     "test": "./node_modules/.bin/mocha --recursive --grep DO_NOT_RUN --invert --exit",
-    "jshint": "./node_modules/.bin/jshint . --exclude node_modules"
+    "eslint": "./node_modules/.bin/eslint ."
   }
 }
