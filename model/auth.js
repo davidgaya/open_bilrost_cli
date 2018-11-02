@@ -72,7 +72,7 @@ module.exports = config => {
         }
     });
 
-    const logout = name => req(
+    const logout = () => req(
         'delete',
         '/auth/access_token'
     ).then(body => {

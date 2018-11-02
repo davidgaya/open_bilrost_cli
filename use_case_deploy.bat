@@ -15,3 +15,7 @@ call bilrost-deploy clean
 call bilrost delete-workspace open_bilrost_test_project
 
 cd ..
+
+git rm examples/open_bilrost_test_project
+git reset .gitmodules
+rm -rf .git/modules/examples/open_bilrost_test_project

@@ -38,10 +38,7 @@ const list_branches = (name, verbose) => cb_model.list_branches(name)
     .catch(log.spawn_error);
 
 
-const list_resources = (name, ref, query, verbose) => cb_model.list_resources(name, ref, query)
-    .then(response => {
-        return response;
-    })
+const list_resources = (name, ref, query) => cb_model.list_resources(name, ref, query)
     .then(log.spawn_success)
     .catch(log.spawn_error);
 

@@ -417,7 +417,7 @@ program
         console.log('  Example:');
         console.log();
         console.log('  bilrost subscribe /assets/foo');
-/*        console.log('  bilrost subscribe NAMESPACE /assets/namespace/');
+        /*console.log('  bilrost subscribe NAMESPACE /assets/namespace/');
         console.log('  bilrost subscribe SEARCH cats main:/assets/red_cat');
         console.log('  Latter example searches for assets that contains "cat" in their name and define "/assets/red_cat" as main dependency');*/
     });

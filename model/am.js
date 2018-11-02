@@ -79,7 +79,7 @@ module.exports = config => {
         }
     });
 
-   const reset_workspace = file_uri => req(
+    const reset_workspace = file_uri => req(
         'post',
         '/assetmanager/workspaces/' + encodeURIComponent(file_uri) + '/reset'
     ).then(body => {
@@ -252,7 +252,7 @@ module.exports = config => {
             throw {
                 message: 'Unexpected body answer',
                 body: body
-           };
+            };
         }
     });
 
@@ -269,7 +269,7 @@ module.exports = config => {
             throw {
                 message: 'Unexpected body answer',
                 body: body
-           };
+            };
         }
     });
 

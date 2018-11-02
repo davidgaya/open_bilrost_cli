@@ -7,6 +7,8 @@
 'use strict';
 
 const program = require('commander');
+const path = require('path');
+
 const deploy_actions = require('./controller/custom/deploy_asset');
 const repair_cache = require('./controller/custom/repair_cache');
 const logger = require('./util/log');
@@ -34,11 +36,17 @@ const start_bilrost_if_not_running = callback => {
 
 const get_config = name => start_bilrost_if_not_running(() => config_models.get(name))();
 
-get_config('CACHE_PATH').then(res => {
-    const cache_path = res.body;
+(async () => {
+    let cache_path;
+    try {
+        cache_path = (await get_config('CACHE_PATH')).body.replace(/\\/g, '/');
+    } catch (err) {
+        logger.spawn_error(err);
+        process.exit();
+    }
 
-    // deploy path is equivalent to cache path for now, until bilrost workspaces are deprecated
-    const deploy_path = require('path').join(cache_path, 'Deploy');
+    const folder_name = path.basename(cache_path);
+    const deploy_path = cache_path.split(folder_name).join('Deploy');
 
     program
         .version('0.0.1')
@@ -53,7 +61,7 @@ get_config('CACHE_PATH').then(res => {
     program
         .command('clean')
         .description('Clean previously installed assets')
-        .action(start_bilrost_if_not_running(options => deploy_actions.clean(process.cwd()), program.bilrostOutput));
+        .action(start_bilrost_if_not_running(() => deploy_actions.clean(process.cwd()), program.bilrostOutput));
 
     program.command(' -- ');
 
@@ -92,4 +100,4 @@ get_config('CACHE_PATH').then(res => {
         };
     }
 
-}).catch(logger.spawn_error);
+})();

@@ -28,7 +28,7 @@ const external_service = {
                 let line = data.toString();
                 try {
                     line = JSON.parse(line).msg;
-                } catch(err) {}
+                } catch(err) { /* ignore err */ }
                 log.spawn_log(line);
 
             });
