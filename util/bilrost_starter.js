@@ -92,8 +92,9 @@ const starter = {
                         external = ext;
                         return lazy_prom();
                     })
-                    .then(() => {
+                    .then(res => {
                         external.stop();
+                        return res;
                     });
             }
         }),
