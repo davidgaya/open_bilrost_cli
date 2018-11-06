@@ -1,6 +1,6 @@
 {
   "name": "open_bilrost_cli",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "description": "Bilrost command line tools",
   "main": "bilrost_cli.js",
   "engines": {

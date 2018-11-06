@@ -21,10 +21,26 @@ function help() {
     program.help();
 }
 
+let cache_path, deploy_path, folder_name;
+
+const get_paths = async () => {
+    try {
+        cache_path = (await config_models.get('CACHE_PATH')).body.replace(/\\/g, '/');
+    } catch (err) {
+        logger.spawn_error(err);
+        process.exit();
+    }
+    folder_name = path.basename(cache_path);
+    deploy_path = cache_path.split(folder_name).join('Deploy');
+};
+
 const start_bilrost_if_not_running = callback => {
     return function () {
         const args = Array.from(arguments);
-        return bilrost_starter.start_if_not_running(9224, () => callback.apply(null, args), program.bilrostOutput)
+        return bilrost_starter.start_if_not_running(9224, async () => {
+            await get_paths();
+            return callback.apply(null, args);
+        }, program.bilrostOutput)
             .catch(err => {
                 if (err) {
                     logger.spawn_error(err);
@@ -34,70 +50,54 @@ const start_bilrost_if_not_running = callback => {
     };
 };
 
-const get_config = name => start_bilrost_if_not_running(() => config_models.get(name))();
+program
+    .version('0.0.1')
+    .option('-B, --bilrost-output', 'Display bilrost output');
 
-(async () => {
-    let cache_path;
-    try {
-        cache_path = (await get_config('CACHE_PATH')).body.replace(/\\/g, '/');
-    } catch (err) {
-        logger.spawn_error(err);
-        process.exit();
-    }
+program
+    .command('install')
+    .description('Install asset')
+    .option('-c, --copy', 'copy content')
+    .action(start_bilrost_if_not_running(options => deploy_actions.install('bilrost.json', process.cwd(), deploy_path, options.copy), program.bilrostOutput));
 
-    const folder_name = path.basename(cache_path);
-    const deploy_path = cache_path.split(folder_name).join('Deploy');
+program
+    .command('clean')
+    .description('Clean previously installed assets')
+    .action(start_bilrost_if_not_running(() => deploy_actions.clean(process.cwd()), program.bilrostOutput));
 
-    program
-        .version('0.0.1')
-        .option('-B, --bilrost-output', 'Display bilrost output');
+program.command(' -- ');
 
-    program
-        .command('install')
-        .description('Install asset')
-        .option('-c, --copy', 'copy content')
-        .action(start_bilrost_if_not_running(options => deploy_actions.install('bilrost.json', process.cwd(), deploy_path, options.copy), program.bilrostOutput));
+program
+    .command('repair-cache')
+    .description('Repair cache')
+    .option('-p, --path', 'Cache path since this is customizable in bilrost configurations')
+    .action(start_bilrost_if_not_running(options => repair_cache(options.path ? options.path : cache_path), program.bilrostOutput));
 
-    program
-        .command('clean')
-        .description('Clean previously installed assets')
-        .action(start_bilrost_if_not_running(() => deploy_actions.clean(process.cwd()), program.bilrostOutput));
+program.command(' -- ');
 
-    program.command(' -- ');
+program
+    .command('help')
+    .description("display this help.")
+    .action(help);
 
-    program
-        .command('repair-cache')
-        .description('Repair cache')
-        .option('-p, --path', 'Cache path since this is customizable in bilrost configurations')
-        .action(start_bilrost_if_not_running(options => repair_cache(options.path ? options.path : cache_path), program.bilrostOutput));
+program.parse(process.argv);
 
-    program.command(' -- ');
+if (!program.args.length) {
+    help();
+}
 
-    program
-        .command('help')
-        .description("display this help.")
-        .action(help);
-
-    program.parse(process.argv);
-
-    if (!program.args.length) {
-        help();
-    }
-
-    if (program.output) {
-        const winston = require('winston');
-        winston.add(winston.transports.File, {
-            filename: program.output + '.log'
-        });
-        console.info = function () {
-            winston.info.apply(null, arguments);
-        };
-        console.error = function () {
-            winston.error.apply(null, arguments);
-        };
-        console.warn = function () {
-            winston.warn.apply(null, arguments);
-        };
-    }
-
-})();
+if (program.output) {
+    const winston = require('winston');
+    winston.add(winston.transports.File, {
+        filename: program.output + '.log'
+    });
+    console.info = function () {
+        winston.info.apply(null, arguments);
+    };
+    console.error = function () {
+        winston.error.apply(null, arguments);
+    };
+    console.warn = function () {
+        winston.warn.apply(null, arguments);
+    };
+}
