@@ -1,6 +1,6 @@
 {
   "name": "open_bilrost_cli",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "description": "Bilrost command line tools",
   "main": "bilrost_cli.js",
   "engines": {
@@ -25,7 +25,7 @@
     "fs-extra": "^4.0.2",
     "inquirer": "^6.0.0",
     "open": "0.0.5",
-    "open_bilrost": "git+https://github.com/fl4re/open_bilrost.git#2.0.28",
+    "open_bilrost": "2.0.29",
     "pretty-ms": "^3.0.1",
     "prettyjson": "^1.2.1",
     "recursive-readdir": "^2.2.2",
